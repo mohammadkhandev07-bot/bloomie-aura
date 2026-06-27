@@ -1,13 +1,15 @@
 bloomie-aura/
-├── frontend/
-│   ├── src/           (Saari React files)
-│   ├── public/        (index.html, logo.png)
-│   ├── package.json
-│   └── vercel.json    (Hatao - sirf root mein rakho)
 │
-├── backend/
-│   ├── server.js
-│   ├── package.json
-│   └── .env
+├── 📁 frontend/                    ✅ Vercel pe deploy
+│   ├── 📁 src/
+│   │   ├── App.jsx                 ✅ (Sab kuch yahi)
+│   │   └── style.css               ✅ (Styling)
+│   ├── 📁 public/
+│   │   ├── index.html              ✅
+│   │   └── logo.png                ✅
+│   ├── package.json                ✅
+│   └── vercel.json                 ✅
 │
-└── vercel.json        ✅ (Root mein rakho)
+└── 📁 backend/                     ✅ Render pe deploy
+    ├── server.js                   ✅ (Sab kuch yahi)
+    └── package.json                ✅
