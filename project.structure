@@ -1,31 +1,13 @@
 bloomie-aura/
+├── frontend/
+│   ├── src/           (Saari React files)
+│   ├── public/        (index.html, logo.png)
+│   ├── package.json
+│   └── vercel.json    (Hatao - sirf root mein rakho)
 │
-├── 📁 public/
-│   ├── logo.png                    ← ✅ Aapka logo (tab + website dono jagah)
-│   └── 📁 images/
-│       └── candle1.jpg, candle2.jpg, candle3.jpg  ← Product photos
+├── backend/
+│   ├── server.js
+│   ├── package.json
+│   └── .env
 │
-├── 📁 src/
-│   ├── 📁 components/
-│   │   ├── Navbar.jsx              ← Top bar (logo + menu)
-│   │   ├── HeroSection.jsx         ← "blooming beauty, lasting aura"
-│   │   ├── ProductCard.jsx         ← Candle card with add to cart
-│   │   ├── OrderForm.jsx           ← Flipkart-style form
-│   │   └── Confetti.jsx            ← Success page celebration
-│   │
-│   ├── 📁 pages/
-│   │   ├── HomePage.jsx            ← Hero + Products (sab kuch yahi)
-│   │   ├── CartPage.jsx            ← Order form
-│   │   └── SuccessPage.jsx         ← Thank you + confetti
-│   │
-│   ├── App.jsx                     ← Routing (Home, Cart, Success)
-│   ├── index.js                    ← React DOM render
-│   └── style.css                   ← ALL styling ek file mein
-│
-├── 📁 backend/                     ← Node.js API (Render pe deploy)
-│   ├── server.js                   ← Express server (sab kuch yahi)
-│   └── package.json                ← Backend dependencies
-│
-├── index.html                      ← Main HTML file
-├── package.json                    ← Frontend dependencies
-└── vercel.json                     ← Vercel deploy settings
+└── vercel.json        ✅ (Root mein rakho)
