@@ -9,14 +9,14 @@ app.use(express.json());
 let orders = [];
 
 const PRODUCTS = [
-  { id: 1, name: 'Vanilla Bliss', fragrance: 'Sweet Vanilla', price: 499, originalPrice: 624, discount: 20, isNew: true, rating: 4.8, reviews: 124 },
-  { id: 2, name: 'Lavender Dream', fragrance: 'Calming Lavender', price: 599, originalPrice: 599, discount: 0, isNew: false, rating: 4.6, reviews: 98 },
-  { id: 3, name: 'Rose Garden', fragrance: 'Fresh Rose', price: 699, originalPrice: 823, discount: 15, isNew: true, rating: 4.9, reviews: 156 },
-  { id: 4, name: 'Jasmine Evening', fragrance: 'Exotic Jasmine', price: 549, originalPrice: 610, discount: 10, isNew: false, rating: 4.7, reviews: 87 },
-  { id: 5, name: 'Sandalwood Serenity', fragrance: 'Warm Sandalwood', price: 799, originalPrice: 1065, discount: 25, isNew: true, rating: 4.8, reviews: 203 },
-  { id: 6, name: 'Cinnamon Spice', fragrance: 'Spicy Cinnamon', price: 449, originalPrice: 449, discount: 0, isNew: false, rating: 4.5, reviews: 76 },
-  { id: 7, name: 'Ocean Breeze', fragrance: 'Fresh Ocean', price: 649, originalPrice: 721, discount: 10, isNew: true, rating: 4.7, reviews: 112 },
-  { id: 8, name: 'Honey & Oats', fragrance: 'Sweet Honey', price: 529, originalPrice: 622, discount: 15, isNew: false, rating: 4.6, reviews: 94 }
+  { id: 1, name: 'Vanilla Bliss', fragrance: 'Sweet Vanilla', price: 499, originalPrice: 624, discount: 20, isNew: true, isBestseller: true, rating: 4.8, reviews: 124, image: '/images/candles/vanilla.jpg', description: 'A warm, comforting scent that fills your home with the sweet aroma of Madagascar vanilla. Perfect for cozy evenings and relaxation.' },
+  { id: 2, name: 'Lavender Dream', fragrance: 'Calming Lavender', price: 599, originalPrice: 599, discount: 0, isNew: false, isBestseller: true, rating: 4.6, reviews: 98, image: '/images/candles/lavender.jpg', description: 'Hand-poured with pure lavender essential oil from Provence. Creates a serene atmosphere for meditation and peaceful sleep.' },
+  { id: 3, name: 'Rose Garden', fragrance: 'Fresh Rose', price: 699, originalPrice: 823, discount: 15, isNew: true, isBestseller: false, rating: 4.9, reviews: 156, image: '/images/candles/rose.jpg', description: 'The timeless elegance of fresh Bulgarian roses captured in a candle. Romantic and uplifting for any special occasion.' },
+  { id: 4, name: 'Jasmine Evening', fragrance: 'Exotic Jasmine', price: 549, originalPrice: 610, discount: 10, isNew: false, isBestseller: false, rating: 4.7, reviews: 87, image: '/images/candles/jasmine.jpg', description: 'Intoxicating jasmine blossoms blended with subtle musk. An exotic fragrance that transforms your space into a luxurious retreat.' },
+  { id: 5, name: 'Sandalwood Serenity', fragrance: 'Warm Sandalwood', price: 799, originalPrice: 1065, discount: 25, isNew: true, isBestseller: true, rating: 4.8, reviews: 203, image: '/images/candles/sandalwood.jpg', description: 'Rich, woody sandalwood from India. Grounding and spiritual, perfect for yoga practice and mindful moments.' },
+  { id: 6, name: 'Cinnamon Spice', fragrance: 'Spicy Cinnamon', price: 449, originalPrice: 449, discount: 0, isNew: false, isBestseller: false, rating: 4.5, reviews: 76, image: '/images/candles/cinnamon.jpg', description: 'Warm cinnamon sticks with hints of clove and nutmeg. The perfect autumn and winter companion for festive gatherings.' },
+  { id: 7, name: 'Ocean Breeze', fragrance: 'Fresh Ocean', price: 649, originalPrice: 721, discount: 10, isNew: true, isBestseller: false, rating: 4.7, reviews: 112, image: '/images/candles/ocean.jpg', description: 'Crisp sea salt and ocean mist with undertones of driftwood. Brings the freshness of the coast into your living space.' },
+  { id: 8, name: 'Honey & Oats', fragrance: 'Sweet Honey', price: 529, originalPrice: 622, discount: 15, isNew: false, isBestseller: false, rating: 4.6, reviews: 94, image: '/images/candles/honey.jpg', description: 'Golden honey drizzled over toasted oats with a hint of vanilla. Warm, comforting, and utterly delicious for your senses.' }
 ];
 
 const PINCODE_DATA = {
@@ -35,7 +35,6 @@ const PINCODE_DATA = {
   '700020': { city: 'Kolkata', state: 'West Bengal' }
 };
 
-// Email transporter (Gmail SMTP)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -91,43 +90,38 @@ app.post('/api/order', async (req, res) => {
 
   orders.push(order);
 
-  // Send email notification
   const itemsHtml = items.map(item => 
-    `<tr><td>${item.name}</td><td>${item.quantity}</td><td>₹${item.price * item.quantity}</td></tr>`
+    `<tr><td style="padding:10px;border-bottom:1px solid #eee">${item.name}</td><td style="padding:10px;border-bottom:1px solid #eee;text-align:center">${item.quantity}</td><td style="padding:10px;border-bottom:1px solid #eee;text-align:right">₹${item.price * item.quantity}</td></tr>`
   ).join('');
 
   const mailOptions = {
     from: '"Bloom & Aura Orders" <bloomaura.orders@gmail.com>',
     to: process.env.OWNER_EMAIL || 'bloomaura.orders@gmail.com',
-    subject: `🕯️ New Order Received - ${orderId}`,
+    subject: `🕯️ New Order - ${orderId}`,
     html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #D4AF37; border-radius: 10px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #D4AF37, #FF6B35); padding: 20px; text-align: center; color: white;">
-          <h1 style="margin: 0;">🕯️ Bloom & Aura</h1>
-          <p style="margin: 5px 0 0;">New Order Received!</p>
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;border:2px solid #D4AF37;border-radius:12px;overflow:hidden">
+        <div style="background:linear-gradient(135deg,#D4AF37,#FF6B35);padding:24px;text-align:center;color:white">
+          <h1 style="margin:0">🕯️ Bloom & Aura</h1>
+          <p style="margin:8px 0 0">New Order Received!</p>
         </div>
-        <div style="padding: 20px; background: #FFF8F0;">
-          <h2 style="color: #2C1810;">Order Details</h2>
+        <div style="padding:24px;background:#FFF8F0">
+          <h2 style="color:#2C1810">Order Details</h2>
           <p><strong>Order ID:</strong> ${orderId}</p>
           <p><strong>Customer:</strong> ${fullName}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Phone:</strong> ${phone}</p>
           <p><strong>Address:</strong> ${address}, ${landmark || 'N/A'}, ${city}, ${state} - ${pincode}</p>
-          <hr style="border: none; border-top: 1px solid #D4AF37; margin: 15px 0;">
-          <h3 style="color: #2C1810;">Items Ordered</h3>
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr style="background: #D4AF37; color: white;">
-              <th style="padding: 10px; text-align: left;">Product</th>
-              <th style="padding: 10px;">Qty</th>
-              <th style="padding: 10px; text-align: right;">Amount</th>
-            </tr>
+          <hr style="border:none;border-top:2px solid #D4AF37;margin:16px 0">
+          <h3 style="color:#2C1810">Items</h3>
+          <table style="width:100%;border-collapse:collapse">
+            <tr style="background:#D4AF37;color:white"><th style="padding:10px;text-align:left">Product</th><th style="padding:10px">Qty</th><th style="padding:10px;text-align:right">Amount</th></tr>
             ${itemsHtml}
           </table>
-          <hr style="border: none; border-top: 1px solid #D4AF37; margin: 15px 0;">
-          <p style="font-size: 18px; font-weight: bold; color: #2C1810;">Total: ₹${totalAmount}</p>
+          <hr style="border:none;border-top:2px solid #D4AF37;margin:16px 0">
+          <p style="font-size:20px;font-weight:bold;color:#2C1810">Total: ₹${totalAmount}</p>
           ${instructions ? `<p><strong>Instructions:</strong> ${instructions}</p>` : ''}
         </div>
-        <div style="background: #2C1810; color: #D4AF37; padding: 15px; text-align: center; font-size: 12px;">
+        <div style="background:#2C1810;color:#D4AF37;padding:16px;text-align:center;font-size:12px">
           Bloom & Aura | blooming beauty, lasting aura
         </div>
       </div>
@@ -136,7 +130,7 @@ app.post('/api/order', async (req, res) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('📧 Order email sent successfully');
+    console.log('📧 Order email sent');
   } catch (err) {
     console.log('⚠️ Email failed:', err.message);
   }
