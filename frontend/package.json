@@ -7,7 +7,6 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
-    "framer-motion": "^10.16.0",
     "lucide-react": "^0.294.0"
   },
   "scripts": {
