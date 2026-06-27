@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Routes, Route, Link, useNavigate, useParams } from 'react-router-dom';
-import { ShoppingCart, Trash2, Plus, Minus, Star, Truck, Shield, Leaf, Gift, Heart, Menu, X, Check, ArrowLeft, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Routes, Route, Link, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { ShoppingCart, Trash2, Plus, Minus, Star, Leaf, Clock, Shield, Gift, Heart, Menu, X, Check, ArrowLeft, MapPin, Phone, Mail, Clock as ClockIcon, Package, Truck, Award, Users, Sparkles } from 'lucide-react';
 import './style.css';
 
 // ===== PRODUCT DATA =====
@@ -95,7 +95,13 @@ const Stars = ({ rating }) => (
 // ===== NAVBAR =====
 const Navbar = ({ cartCount }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <nav className="navbar">
@@ -108,9 +114,11 @@ const Navbar = ({ cartCount }) => {
           </div>
         </Link>
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-          <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-          <li><Link to="/#products" onClick={() => setMenuOpen(false)}>Products</Link></li>
-          <li><Link to="/cart" onClick={() => setMenuOpen(false)}>
+          <li><Link to="/" className={isActive('/') ? 'active' : ''} onClick={() => setMenuOpen(false)}>Home</Link></li>
+          <li><Link to="/products" className={isActive('/products') ? 'active' : ''} onClick={() => setMenuOpen(false)}>Products</Link></li>
+          <li><Link to="/about" className={isActive('/about') ? 'active' : ''} onClick={() => setMenuOpen(false)}>About</Link></li>
+          <li><Link to="/history" className={isActive('/history') ? 'active' : ''} onClick={() => setMenuOpen(false)}>History</Link></li>
+          <li><Link to="/cart" className={isActive('/cart') ? 'active' : ''} onClick={() => setMenuOpen(false)}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <ShoppingCart size={18} /> Cart
             </span>
@@ -129,59 +137,116 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HERO =====
-const Hero = () => {
+// ===== HOME PAGE =====
+const HomePage = ({ onAddToCart }) => {
   const navigate = useNavigate();
+  const featured = PRODUCTS.filter(p => p.isBestseller).slice(0, 4);
+
   return (
-    <section className="hero">
-      <div className="hero-container">
-        <div>
-          <div className="hero-badge">
-            <Leaf size={16} /> Premium Handmade Candles
-          </div>
-          <h1 className="hero-title">
-            Blooming Beauty,<br />
-            Lasting <span className="gradient-text">Aura</span>
-          </h1>
-          <p className="hero-desc">
-            Discover our collection of handcrafted candles made with 100% natural soy wax 
-            and premium essential oils. Each candle is carefully poured to create the 
-            perfect ambiance for your home.
-          </p>
-          <div className="hero-buttons">
-            <button className="btn btn-primary" onClick={() => navigate('/#products')}>
-              Shop Now <ShoppingCart size={18} />
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate('/#products')}>
-              Explore Collection
-            </button>
-          </div>
-          <div className="hero-stats">
-            <div className="stat-item">
-              <div className="stat-number">500+</div>
-              <div className="stat-label">Happy Customers</div>
+    <>
+      {/* Hero */}
+      <section className="hero">
+        <div className="hero-container">
+          <div>
+            <div className="hero-badge">
+              <Leaf size={16} /> Premium Handmade Candles
             </div>
-            <div className="stat-item">
-              <div className="stat-number">50+</div>
-              <div className="stat-label">Premium Scents</div>
+            <h1 className="hero-title">
+              Blooming Beauty,<br />
+              Lasting <span className="gradient-text">Aura</span>
+            </h1>
+            <p className="hero-desc">
+              Discover our collection of handcrafted candles made with 100% natural soy wax 
+              and premium essential oils. Each candle is carefully poured to create the 
+              perfect ambiance for your home.
+            </p>
+            <div className="hero-buttons">
+              <button className="btn btn-primary" onClick={() => navigate('/products')}>
+                Shop Now <ShoppingCart size={18} />
+              </button>
+              <button className="btn btn-secondary" onClick={() => navigate('/products')}>
+                Explore Collection
+              </button>
             </div>
-            <div className="stat-item">
-              <div className="stat-number">100%</div>
-              <div className="stat-label">Natural Wax</div>
+            <div className="hero-stats">
+              <div className="stat-item">
+                <div className="stat-number">500+</div>
+                <div className="stat-label">Happy Customers</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">50+</div>
+                <div className="stat-label">Premium Scents</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">100%</div>
+                <div className="stat-label">Natural Wax</div>
+              </div>
+            </div>
+          </div>
+          <div className="candle-visual">
+            <div className="candle-container">
+              <div className="candle-glow"></div>
+              <div className="candle-flame"></div>
+              <div className="candle-wick"></div>
+              <div className="candle-body"></div>
+              <div className="candle-plate"></div>
             </div>
           </div>
         </div>
-        <div className="candle-visual">
-          <div className="candle-container">
-            <div className="candle-glow"></div>
-            <div className="candle-flame"></div>
-            <div className="candle-wick"></div>
-            <div className="candle-body"></div>
-            <div className="candle-plate"></div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="section products-section">
+        <div className="section-container">
+          <div className="section-header">
+            <span className="section-label">Featured</span>
+            <h2 className="section-title">Our Bestsellers</h2>
+            <p className="section-subtitle">Customer favorites that bring warmth and serenity to every home</p>
+          </div>
+          <div className="products-grid">
+            {featured.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '40px' }}>
+            <button className="btn btn-secondary" onClick={() => navigate('/products')}>
+              View All Products <ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} />
+            </button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="section" style={{ background: 'var(--cream)' }}>
+        <div className="section-container">
+          <div className="section-header">
+            <span className="section-label">Why Us</span>
+            <h2 className="section-title">Crafted with Care</h2>
+            <p className="section-subtitle">Every candle tells a story of passion, quality, and attention to detail</p>
+          </div>
+          <div className="values-grid">
+            <div className="value-card">
+              <div className="value-icon"><Leaf size={24} /></div>
+              <h3>100% Natural</h3>
+              <p>Pure soy wax with no harmful chemicals or additives</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"><Heart size={24} /></div>
+              <h3>Hand-Poured</h3>
+              <p>Each candle is crafted with love and precision</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"><ClockIcon size={24} /></div>
+              <h3>Long Lasting</h3>
+              <p>50+ hours of burn time for extended enjoyment</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon"><Award size={24} /></div>
+              <h3>Premium Quality</h3>
+              <p>Only the finest essential oils and fragrances</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
@@ -226,24 +291,26 @@ const ProductCard = ({ product, onAdd }) => {
   );
 };
 
-// ===== PRODUCTS SECTION =====
-const ProductsSection = ({ onAddToCart }) => (
-  <section id="products" className="section products-section">
-    <div className="section-container">
-      <div className="section-header">
-        <span className="section-label">Our Collection</span>
-        <h2 className="section-title">Handcrafted with Love</h2>
-        <p className="section-subtitle">Each candle is carefully hand-poured using 100% natural soy wax and premium essential oils</p>
+// ===== PRODUCTS PAGE =====
+const ProductsPage = ({ onAddToCart }) => (
+  <div style={{ paddingTop: '96px' }}>
+    <section className="section products-section">
+      <div className="section-container">
+        <div className="section-header">
+          <span className="section-label">Collection</span>
+          <h2 className="section-title">All Products</h2>
+          <p className="section-subtitle">Handcrafted with love, made for your soul</p>
+        </div>
+        <div className="products-grid">
+          {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+        </div>
       </div>
-      <div className="products-grid">
-        {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 );
 
 // ===== PRODUCT DETAIL PAGE =====
-const ProductDetail = ({ onAddToCart }) => {
+const ProductDetailPage = ({ onAddToCart }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const product = PRODUCTS.find(p => p.id === parseInt(id));
@@ -260,7 +327,7 @@ const ProductDetail = ({ onAddToCart }) => {
         </div>
         <div className="detail-info">
           <div className="detail-breadcrumb">
-            <Link to="/">Home</Link> <span>/</span> <Link to="/#products">Products</Link> <span>/</span> <span style={{ color: 'var(--gray-800)' }}>{product.name}</span>
+            <Link to="/">Home</Link> <span>/</span> <Link to="/products">Products</Link> <span>/</span> <span style={{ color: 'var(--gray-800)' }}>{product.name}</span>
           </div>
           {product.isNew && <span className="product-badge badge-new" style={{ position: 'static', display: 'inline-block', marginBottom: '12px' }}>New Arrival</span>}
           <h1 className="detail-name">{product.name}</h1>
@@ -279,7 +346,7 @@ const ProductDetail = ({ onAddToCart }) => {
           <p className="detail-description">{product.description}</p>
           <div className="detail-features">
             <div className="detail-feature"><div className="detail-feature-icon"><Leaf size={18} /></div>100% Natural Soy Wax</div>
-            <div className="detail-feature"><div className="detail-feature-icon"><Clock size={18} /></div>50+ Hours Burn Time</div>
+            <div className="detail-feature"><div className="detail-feature-icon"><ClockIcon size={18} /></div>50+ Hours Burn Time</div>
             <div className="detail-feature"><div className="detail-feature-icon"><Shield size={18} /></div>Non-Toxic & Safe</div>
             <div className="detail-feature"><div className="detail-feature-icon"><Gift size={18} /></div>Hand-Poured in India</div>
           </div>
@@ -321,7 +388,7 @@ const CartPage = ({ cart, onUpdateQty, onRemove, onCheckout }) => {
             <div className="cart-empty-icon">🛒</div>
             <h3>Your cart is empty</h3>
             <p>Add some beautiful candles to get started</p>
-            <button className="btn btn-primary" onClick={() => navigate('/#products')}>
+            <button className="btn btn-primary" onClick={() => navigate('/products')}>
               Continue Shopping
             </button>
           </div>
@@ -357,7 +424,7 @@ const CartPage = ({ cart, onUpdateQty, onRemove, onCheckout }) => {
               <button className="btn btn-primary btn-checkout" onClick={onCheckout}>
                 Proceed to Checkout <ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} />
               </button>
-              <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }} onClick={() => navigate('/#products')}>
+              <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }} onClick={() => navigate('/products')}>
                 Continue Shopping
               </button>
             </div>
@@ -435,7 +502,7 @@ const CheckoutPage = ({ cart, onOrderSuccess }) => {
           <div className="cart-empty">
             <div className="cart-empty-icon">🛒</div>
             <h3>Your cart is empty</h3>
-            <button className="btn btn-primary" onClick={() => navigate('/#products')}>Continue Shopping</button>
+            <button className="btn btn-primary" onClick={() => navigate('/products')}>Continue Shopping</button>
           </div>
         </div>
       </div>
@@ -556,6 +623,104 @@ const SuccessPage = ({ orderId }) => {
   );
 };
 
+// ===== ABOUT PAGE =====
+const AboutPage = () => (
+  <div className="about-page">
+    <div className="about-hero">
+      <h1 className="about-hero-title">Our Story</h1>
+      <p className="about-hero-text">Crafting moments of serenity, one candle at a time</p>
+    </div>
+
+    <section className="about-section">
+      <div className="about-grid">
+        <div className="about-image">
+          <img src="/images/candles/sandalwood.jpg" alt="Our Craft" onError={(e) => e.target.src='https://placehold.co/600x400/D4AF37/FFF?text=Our+Story'} />
+        </div>
+        <div className="about-content">
+          <h2>Handcrafted with Passion</h2>
+          <p>Bloom & Aura was born from a simple belief: that every home deserves the warmth and tranquility of a perfectly crafted candle. Founded in 2020, we started as a small kitchen operation and have grown into a beloved brand across India.</p>
+          <p>Each candle is hand-poured in small batches using 100% natural soy wax, premium essential oils, and cotton wicks. We never compromise on quality, ensuring every product meets our exacting standards.</p>
+          <p>Our mission is to bring the art of candle-making to every Indian home, creating products that are not just beautiful but also safe, sustainable, and soul-soothing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section className="about-section" style={{ background: 'var(--cream)' }}>
+      <div className="section-container">
+        <div className="section-header">
+          <span className="section-label">Our Values</span>
+          <h2 className="section-title">What We Stand For</h2>
+        </div>
+        <div className="values-grid">
+          <div className="value-card">
+            <div className="value-icon"><Leaf size={24} /></div>
+            <h3>Sustainable</h3>
+            <p>Eco-friendly materials and packaging that respect our planet</p>
+          </div>
+          <div className="value-card">
+            <div className="value-icon"><Heart size={24} /></div>
+            <h3>Authentic</h3>
+            <p>Real essential oils, no synthetic fragrances ever</p>
+          </div>
+          <div className="value-card">
+            <div className="value-icon"><Users size={24} /></div>
+            <h3>Community</h3>
+            <p>Supporting local artisans and small businesses</p>
+          </div>
+          <div className="value-card">
+            <div className="value-icon"><Sparkles size={24} /></div>
+            <h3>Quality</h3>
+            <p>Rigorous testing ensures every candle is perfect</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+);
+
+// ===== HISTORY PAGE =====
+const HistoryPage = ({ orders }) => (
+  <div className="history-page">
+    <div className="history-container">
+      <h1 className="history-title"><Package size={28} /> Order History</h1>
+      {orders.length === 0 ? (
+        <div className="history-empty">
+          <div className="cart-empty-icon">📦</div>
+          <h3>No orders yet</h3>
+          <p>Your order history will appear here</p>
+          <button className="btn btn-primary" onClick={() => window.location.href='/products'}>
+            Start Shopping
+          </button>
+        </div>
+      ) : (
+        orders.map((order, idx) => (
+          <div className="history-card" key={idx}>
+            <div className="history-header">
+              <div>
+                <span className="history-id">{order.orderId}</span>
+                <span className="history-date" style={{ marginLeft: '16px' }}>{new Date(order.createdAt).toLocaleDateString()}</span>
+              </div>
+              <span className={`history-status status-${order.status}`}>{order.status}</span>
+            </div>
+            <div className="history-items">
+              {order.items.map((item, i) => (
+                <div className="history-item" key={i}>
+                  <span>{item.name} x {item.quantity}</span>
+                  <span>₹{item.price * item.quantity}</span>
+                </div>
+              ))}
+            </div>
+            <div className="history-total">
+              <span>Total</span>
+              <span>₹{order.totalAmount}</span>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+);
+
 // ===== FOOTER =====
 const Footer = () => (
   <footer className="footer">
@@ -575,9 +740,9 @@ const Footer = () => (
         <h4 className="footer-title">Quick Links</h4>
         <ul className="footer-links">
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/#products">Products</Link></li>
+          <li><Link to="/products">Products</Link></li>
+          <li><Link to="/about">About</Link></li>
           <li><Link to="/cart">Cart</Link></li>
-          <li><a href="#">About Us</a></li>
         </ul>
       </div>
       <div>
@@ -594,7 +759,7 @@ const Footer = () => (
         <p><MapPin size={16} /> 123 Candle Street, Mumbai</p>
         <p><Phone size={16} /> +91 98765 43210</p>
         <p><Mail size={16} /> hello@bloomandaura.com</p>
-        <p><Clock size={16} /> Mon-Sat: 10AM - 8PM</p>
+        <p><ClockIcon size={16} /> Mon-Sat: 10AM - 8PM</p>
       </div>
     </div>
     <div className="footer-bottom">
@@ -606,6 +771,7 @@ const Footer = () => (
 // ===== MAIN APP =====
 function App() {
   const [cart, setCart] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [confettiActive, setConfettiActive] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const navigate = useNavigate();
@@ -637,6 +803,10 @@ function App() {
   const handleOrderSuccess = (id) => {
     setOrderId(id);
     setConfettiActive(true);
+    // Save order to history
+    const orderItems = cart.map(item => ({ name: item.name, price: item.price, quantity: item.qty }));
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0) + (cart.reduce((sum, item) => sum + item.price * item.qty, 0) > 500 ? 0 : 50);
+    setOrders(prev => [...prev, { orderId: id, items: orderItems, totalAmount: total, status: 'pending', createdAt: new Date().toISOString() }]);
     setCart([]);
     navigate('/success');
   };
@@ -647,11 +817,14 @@ function App() {
     <div className="app">
       <Navbar cartCount={cart.reduce((sum, item) => sum + item.qty, 0)} />
       <Routes>
-        <Route path="/" element={<><Hero /><ProductsSection onAddToCart={addToCart} /></>} />
-        <Route path="/product/:id" element={<ProductDetail onAddToCart={addToCart} />} />
+        <Route path="/" element={<HomePage onAddToCart={addToCart} />} />
+        <Route path="/products" element={<ProductsPage onAddToCart={addToCart} />} />
+        <Route path="/product/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
         <Route path="/cart" element={<CartPage cart={cart} onUpdateQty={updateQty} onRemove={removeFromCart} onCheckout={() => navigate('/checkout')} />} />
         <Route path="/checkout" element={<CheckoutPage cart={cart} onOrderSuccess={handleOrderSuccess} />} />
         <Route path="/success" element={<SuccessPage orderId={orderId} />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/history" element={<HistoryPage orders={orders} />} />
       </Routes>
       <Footer />
       <Confetti active={confettiActive} onComplete={handleConfettiComplete} />
