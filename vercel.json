@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "experimentalServices": {
+    "frontend": {
+      "root": "frontend",
+      "framework": "create-react-app"
+    },
+    "backend": {
+      "root": "api",
+      "framework": "express"
+    }
+  }
+}
