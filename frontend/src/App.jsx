@@ -137,16 +137,16 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HOME PAGE =====
-const HomePage = ({ onAddToCart }) => {
+// ===== HOME PAGE - CLEAN, NO CANDLE, NO SHOPPING =====
+const HomePage = () => {
   const navigate = useNavigate();
-  const featured = PRODUCTS.filter(p => p.isBestseller).slice(0, 4);
 
   return (
     <>
-      {/* Hero */}
-      <section className="hero">
+      {/* Hero - Left text, Right empty for your image */}
+      <section className="hero" style={{ minHeight: '90vh' }}>
         <div className="hero-container">
+          {/* LEFT SIDE - Text only */}
           <div>
             <div className="hero-badge">
               <Leaf size={16} /> Premium Handmade Candles
@@ -164,8 +164,8 @@ const HomePage = ({ onAddToCart }) => {
               <button className="btn btn-primary" onClick={() => navigate('/products')}>
                 Shop Now <ShoppingCart size={18} />
               </button>
-              <button className="btn btn-secondary" onClick={() => navigate('/products')}>
-                Explore Collection
+              <button className="btn btn-secondary" onClick={() => navigate('/about')}>
+                Our Story
               </button>
             </div>
             <div className="hero-stats">
@@ -183,14 +183,11 @@ const HomePage = ({ onAddToCart }) => {
               </div>
             </div>
           </div>
-          <div className="candle-visual">
-            <div className="candle-container">
-              <div className="candle-glow"></div>
-              <div className="candle-flame"></div>
-              <div className="candle-wick"></div>
-              <div className="candle-body"></div>
-              <div className="candle-plate"></div>
-            </div>
+
+          {/* RIGHT SIDE - Khali jaga for your image */}
+          <div className="hero-image-side">
+            {/* Yahan apni image lagao */}
+            {/* <img src="/images/home-candle.png" alt="Bloom & Aura" /> */}
           </div>
         </div>
       </section>
