@@ -137,10 +137,10 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HOME PAGE - FIXED =====
-const HomePage = ({ onAddToCart }) => {
+// ===== HOME PAGE - NO ADD TO CART ON FEATURED PRODUCTS =====
+const HomePage = () => {
   const navigate = useNavigate();
-  
+
   // Featured products = bestsellers
   const featured = PRODUCTS.filter(p => p.isBestseller);
 
@@ -195,7 +195,7 @@ const HomePage = ({ onAddToCart }) => {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Featured Products - NO ADD TO CART, only view */}
       <section className="section products-section">
         <div className="section-container">
           <div className="section-header">
@@ -204,7 +204,7 @@ const HomePage = ({ onAddToCart }) => {
             <p className="section-subtitle">Customer favorites that bring warmth and serenity to every home</p>
           </div>
           <div className="products-grid">
-            {featured.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+            {featured.map(p => <HomeProductCard key={p.id} product={p} />)}
           </div>
           <div style={{ textAlign: 'center', marginTop: '40px' }}>
             <button className="btn btn-secondary" onClick={() => navigate('/products')}>
@@ -250,7 +250,47 @@ const HomePage = ({ onAddToCart }) => {
   );
 };
 
-// ===== PRODUCT CARD =====
+// ===== HOME PRODUCT CARD - NO ADD TO CART BUTTON =====
+const HomeProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
+  const getBadge = () => {
+    if (product.isNew) return <span className="product-badge badge-new">New</span>;
+    if (product.discount > 0) return <span className="product-badge badge-discount">-{product.discount}%</span>;
+    if (product.isBestseller) return <span className="product-badge badge-bestseller">Best</span>;
+    return null;
+  };
+
+  return (
+    <div className="product-card" onClick={() => navigate(`/products/${product.id}`)} style={{ cursor: 'pointer' }}>
+      <div className="product-image-wrapper">
+        {getBadge()}
+        <img src={product.image} alt={product.name} className="product-image" onError={(e) => { e.target.src = '/logo.png'; }} />
+      </div>
+      <div className="product-info">
+        <h3 className="product-name">{product.name}</h3>
+        <p className="product-fragrance">{product.fragrance}</p>
+        <div className="product-rating">
+          <Stars rating={product.rating} />
+          <span className="rating-count">({product.reviews})</span>
+        </div>
+        <div className="product-price-row">
+          <span className="price-current">₹{product.price}</span>
+          {product.originalPrice > product.price && (
+            <span className="price-original">₹{product.originalPrice}</span>
+          )}
+          {product.discount > 0 && <span className="price-discount">-{product.discount}%</span>}
+        </div>
+        {/* NO Add to Cart button - only view details */}
+        <div style={{ padding: '12px 0', textAlign: 'center', color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.9rem', borderTop: '1px solid var(--gray-100)', marginTop: '8px' }}>
+          Click to view details →
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ===== PRODUCT CARD (for Products page) =====
 const ProductCard = ({ product, onAdd }) => {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
@@ -493,7 +533,7 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
   const validate = () => {
     const errs = {};
     if (!formData.fullName.trim()) errs.fullName = 'Full name is required';
-    if (!formData.email.trim() || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(formData.email)) errs.email = 'Valid email is required';
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = 'Valid email is required';
     if (!formData.phone.trim() || formData.phone.length !== 10) errs.phone = '10-digit phone number required';
     if (!formData.address.trim()) errs.address = 'Address is required';
     if (!formData.pincode.trim() || !PINCODE_DATA[formData.pincode]) errs.pincode = 'Enter valid pincode';
@@ -504,7 +544,7 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
   };
 
   const handlePincode = (val) => {
-    const pin = val.replace(/\\D/g, '').slice(0, 6);
+    const pin = val.replace(/\D/g, '').slice(0, 6);
     setFormData({ ...formData, pincode: pin });
     if (PINCODE_DATA[pin]) {
       setFormData(prev => ({ ...prev, pincode: pin, city: PINCODE_DATA[pin].city, state: PINCODE_DATA[pin].state }));
@@ -528,61 +568,61 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        <h2 className="checkout-title\">Checkout</h2>
+        <h2 className="checkout-title">Checkout</h2>
         <form className="checkout-form" onSubmit={handleSubmit}>
           <div className="form-section">
-            <h3 className="form-section-title\">Contact Information</h3>
+            <h3 className="form-section-title">Contact Information</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label className="form-label\">Full Name <span>*</span></label>
+                <label className="form-label">Full Name <span>*</span></label>
                 <input className={`form-input ${errors.fullName ? 'error' : ''}`} value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="John Doe" />
-                {errors.fullName && <span className="error-text show\">{errors.fullName}</span>}
+                {errors.fullName && <span className="error-text show">{errors.fullName}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label\">Email <span>*</span></label>
+                <label className="form-label">Email <span>*</span></label>
                 <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="john@example.com" />
-                {errors.email && <span className="error-text show\">{errors.email}</span>}
+                {errors.email && <span className="error-text show">{errors.email}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label\">Phone <span>*</span></label>
-                <input className={`form-input ${errors.phone ? 'error' : ''}`} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
-                {errors.phone && <span className="error-text show\">{errors.phone}</span>}
+                <label className="form-label">Phone <span>*</span></label>
+                <input className={`form-input ${errors.phone ? 'error' : ''}`} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
+                {errors.phone && <span className="error-text show">{errors.phone}</span>}
               </div>
             </div>
           </div>
 
           <div className="form-section">
-            <h3 className="form-section-title\">Shipping Address</h3>
+            <h3 className="form-section-title">Shipping Address</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label className="form-label\">Address <span>*</span></label>
+                <label className="form-label">Address <span>*</span></label>
                 <input className={`form-input ${errors.address ? 'error' : ''}`} value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="123, Main Street, Apartment 4B" />
-                {errors.address && <span className="error-text show\">{errors.address}</span>}
+                {errors.address && <span className="error-text show">{errors.address}</span>}
               </div>
               <div className="form-group full-width">
-                <label className="form-label\">Landmark</label>
+                <label className="form-label">Landmark</label>
                 <input className="form-input" value={formData.landmark} onChange={e => setFormData({...formData, landmark: e.target.value})} placeholder="Near City Mall" />
               </div>
               <div className="form-group">
-                <label className="form-label\">Pincode <span>*</span></label>
+                <label className="form-label">Pincode <span>*</span></label>
                 <input className={`form-input ${errors.pincode ? 'error' : ''}`} value={formData.pincode} onChange={e => handlePincode(e.target.value)} placeholder="400001" maxLength={6} />
-                {errors.pincode && <span className="error-text show\">{errors.pincode}</span>}
+                {errors.pincode && <span className="error-text show">{errors.pincode}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label\">City <span>*</span></label>
+                <label className="form-label">City <span>*</span></label>
                 <input className={`form-input ${errors.city ? 'error' : ''}`} value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
-                {errors.city && <span className="error-text show\">{errors.city}</span>}
+                {errors.city && <span className="error-text show">{errors.city}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label\">State <span>*</span></label>
+                <label className="form-label">State <span>*</span></label>
                 <input className={`form-input ${errors.state ? 'error' : ''}`} value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
-                {errors.state && <span className="error-text show\">{errors.state}</span>}
+                {errors.state && <span className="error-text show">{errors.state}</span>}
               </div>
             </div>
           </div>
 
           <div className="form-section">
-            <h3 className="form-section-title\">Order Items</h3>
+            <h3 className="form-section-title">Order Items</h3>
             <div className="checkout-items">
               {cart.map((item, idx) => (
                 <div className="checkout-item" key={idx}>
@@ -595,7 +635,7 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
           </div>
 
           <div className="form-group full-width">
-            <label className="form-label\">Special Instructions</label>
+            <label className="form-label">Special Instructions</label>
             <textarea className="form-input" rows="3" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} placeholder="Any delivery instructions..." style={{ resize: 'vertical' }} />
           </div>
 
@@ -616,11 +656,11 @@ const SuccessPage = () => {
   return (
     <div className="success-page">
       <div className="success-card">
-        <div className="success-icon\"><Check size={40} /></div>
-        <h2 className="success-title\">Order Placed!</h2>
-        <p className="success-text\">Thank you for your purchase.</p>
-        <p className="success-text\">We've sent a confirmation to your email.</p>
-        <div className="success-order-id\">{orderId}</div>
+        <div className="success-icon"><Check size={40} /></div>
+        <h2 className="success-title">Order Placed!</h2>
+        <p className="success-text">Thank you for your purchase.</p>
+        <p className="success-text">We've sent a confirmation to your email.</p>
+        <div className="success-order-id">{orderId}</div>
         <button className="btn btn-primary" onClick={() => navigate('/')} style={{ marginTop: '24px' }}>
           Continue Shopping
         </button>
@@ -633,8 +673,8 @@ const SuccessPage = () => {
 const AboutPage = () => (
   <div className="about-page">
     <div className="about-hero">
-      <h1 className="about-hero-title\">Our Story</h1>
-      <p className="about-hero-text\">Crafting moments of tranquility, one candle at a time</p>
+      <h1 className="about-hero-title">Our Story</h1>
+      <p className="about-hero-text">Crafting moments of tranquility, one candle at a time</p>
     </div>
     <div className="about-section">
       <div className="about-grid">
@@ -652,22 +692,22 @@ const AboutPage = () => (
     <div className="about-section" style={{ background: 'var(--cream)' }}>
       <div className="values-grid">
         <div className="value-card">
-          <div className="value-icon\"><Award size={28} /></div>
+          <div className="value-icon"><Award size={28} /></div>
           <h3>Premium Quality</h3>
           <p>Only the finest natural ingredients make it into our candles</p>
         </div>
         <div className="value-card">
-          <div className="value-icon\"><Users size={28} /></div>
+          <div className="value-icon"><Users size={28} /></div>
           <h3>Community</h3>
           <p>Supporting local artisans and sustainable farming</p>
         </div>
         <div className="value-card">
-          <div className="value-icon\"><Sparkles size={28} /></div>
+          <div className="value-icon"><Sparkles size={28} /></div>
           <h3>Innovation</h3>
           <p>Constantly exploring new scents and techniques</p>
         </div>
         <div className="value-card">
-          <div className="value-icon\"><Heart size={28} /></div>
+          <div className="value-icon"><Heart size={28} /></div>
           <h3>Made with Love</h3>
           <p>Every candle is a labor of love from our family to yours</p>
         </div>
@@ -688,7 +728,7 @@ const HistoryPage = () => {
   if (orders.length === 0) return (
     <div className="history-page">
       <div className="history-container">
-        <h2 className="history-title\">Order History</h2>
+        <h2 className="history-title">Order History</h2>
         <div className="history-empty">
           <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📦</div>
           <h3>No orders yet</h3>
@@ -704,15 +744,15 @@ const HistoryPage = () => {
   return (
     <div className="history-page">
       <div className="history-container">
-        <h2 className="history-title\">Order History</h2>
+        <h2 className="history-title">Order History</h2>
         {orders.map((order, idx) => (
           <div className="history-card" key={idx}>
             <div className="history-header">
               <div>
-                <span className="history-id\">{order.id || 'BA' + Date.now()}</span>
-                <span className="history-date\" style={{ marginLeft: '16px' }}>{order.date || new Date().toLocaleDateString()}</span>
+                <span className="history-id">{order.id || 'BA' + Date.now()}</span>
+                <span className="history-date" style={{ marginLeft: '16px' }}>{order.date || new Date().toLocaleDateString()}</span>
               </div>
-              <span className="history-status status-pending\">Processing</span>
+              <span className="history-status status-pending">Processing</span>
             </div>
             <div className="history-items">
               {order.items?.map((item, i) => (
@@ -722,7 +762,7 @@ const HistoryPage = () => {
                 </div>
               ))}
             </div>
-            <div className="history-total\"><span>Total</span><span>₹{order.total}</span></div>
+            <div className="history-total"><span>Total</span><span>₹{order.total}</span></div>
           </div>
         ))}
       </div>
@@ -786,7 +826,7 @@ const App = () => {
       <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
       <Navbar cartCount={cartCount} />
       <Routes>
-        <Route path="/" element={<HomePage onAddToCart={addToCart} />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage onAddToCart={addToCart} />} />
         <Route path="/products/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
         <Route path="/cart" element={<CartPage cart={cart} onUpdateQty={updateQty} onRemove={removeFromCart} onClear={clearCart} />} />
