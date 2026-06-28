@@ -1,21 +1,16 @@
-// api/order.js - Vercel Serverless Function
-
+const express = require('express');
 const nodemailer = require('nodemailer');
+const app = express();
 
-module.exports = async (req, res) => {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+app.use(express.json());
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+// Health check
+app.get('/', (req, res) => {
+  res.json({ status: 'Bloom & Aura API is running!' });
+});
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+// Order endpoint
+app.post('/order', async (req, res) => {
   const { 
     fullName, email, phone, address, city, state, 
     pincode, quantity, notes, product, total 
@@ -66,4 +61,6 @@ module.exports = async (req, res) => {
     console.error('Email error:', error);
     return res.status(500).json({ error: 'Failed to send email' });
   }
-};
+});
+
+module.exports = app;
