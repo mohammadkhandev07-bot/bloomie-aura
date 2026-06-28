@@ -5,14 +5,14 @@ import './style.css';
 
 // ===== PRODUCT DATA =====
 const PRODUCTS = [
-  { id: 1, name: 'Vanilla Bliss', fragrance: 'Sweet Vanilla', price: 499, originalPrice: 624, discount: 20, isNew: true, isBestseller: true, rating: 4.8, reviews: 124, image: '/images/candles/vanilla.jpg', description: 'A warm, comforting scent that fills your home with the sweet aroma of Madagascar vanilla. Perfect for cozy evenings and relaxation.' },
-  { id: 2, name: 'Lavender Dream', fragrance: 'Calming Lavender', price: 599, originalPrice: 599, discount: 0, isNew: false, isBestseller: true, rating: 4.6, reviews: 98, image: '/images/candles/lavender.jpg', description: 'Hand-poured with pure lavender essential oil from Provence. Creates a serene atmosphere for meditation and peaceful sleep.' },
-  { id: 3, name: 'Rose Garden', fragrance: 'Fresh Rose', price: 699, originalPrice: 823, discount: 15, isNew: true, isBestseller: false, rating: 4.9, reviews: 156, image: '/images/candles/rose.jpg', description: 'The timeless elegance of fresh Bulgarian roses captured in a candle. Romantic and uplifting for any special occasion.' },
-  { id: 4, name: 'Jasmine Evening', fragrance: 'Exotic Jasmine', price: 549, originalPrice: 610, discount: 10, isNew: false, isBestseller: false, rating: 4.7, reviews: 87, image: '/images/candles/jasmine.jpg', description: 'Intoxicating jasmine blossoms blended with subtle musk. An exotic fragrance that transforms your space into a luxurious retreat.' },
-  { id: 5, name: 'Sandalwood Serenity', fragrance: 'Warm Sandalwood', price: 799, originalPrice: 1065, discount: 25, isNew: true, isBestseller: true, rating: 4.8, reviews: 203, image: '/images/candles/sandalwood.jpg', description: 'Rich, woody sandalwood from India. Grounding and spiritual, perfect for yoga practice and mindful moments.' },
-  { id: 6, name: 'Cinnamon Spice', fragrance: 'Spicy Cinnamon', price: 449, originalPrice: 449, discount: 0, isNew: false, isBestseller: false, rating: 4.5, reviews: 76, image: '/images/candles/cinnamon.jpg', description: 'Warm cinnamon sticks with hints of clove and nutmeg. The perfect autumn and winter companion for festive gatherings.' },
-  { id: 7, name: 'Ocean Breeze', fragrance: 'Fresh Ocean', price: 649, originalPrice: 721, discount: 10, isNew: true, isBestseller: false, rating: 4.7, reviews: 112, image: '/images/candles/ocean.jpg', description: 'Crisp sea salt and ocean mist with undertones of driftwood. Brings the freshness of the coast into your living space.' },
-  { id: 8, name: 'Honey & Oats', fragrance: 'Sweet Honey', price: 529, originalPrice: 622, discount: 15, isNew: false, isBestseller: false, rating: 4.6, reviews: 94, image: '/images/candles/honey.jpg', description: 'Golden honey drizzled over toasted oats with a hint of vanilla. Warm, comforting, and utterly delicious for your senses.' }
+  { id: 1, name: 'Vanilla Bliss', fragrance: 'Sweet Vanilla', price: 499, originalPrice: 624, discount: 20, isNew: true, isBestseller: true, rating: 4.8, reviews: 124, image: '/images/candles/vanilla.png', description: 'A warm, comforting scent that fills your home with the sweet aroma of Madagascar vanilla. Perfect for cozy evenings and relaxation.' },
+  { id: 2, name: 'Lavender Dream', fragrance: 'Calming Lavender', price: 599, originalPrice: 599, discount: 0, isNew: false, isBestseller: true, rating: 4.6, reviews: 98, image: '/images/candles/lavender.png', description: 'Hand-poured with pure lavender essential oil from Provence. Creates a serene atmosphere for meditation and peaceful sleep.' },
+  { id: 3, name: 'Rose Garden', fragrance: 'Fresh Rose', price: 699, originalPrice: 823, discount: 15, isNew: true, isBestseller: false, rating: 4.9, reviews: 156, image: '/images/candles/rose.png', description: 'The timeless elegance of fresh Bulgarian roses captured in a candle. Romantic and uplifting for any special occasion.' },
+  { id: 4, name: 'Jasmine Evening', fragrance: 'Exotic Jasmine', price: 549, originalPrice: 610, discount: 10, isNew: false, isBestseller: false, rating: 4.7, reviews: 87, image: '/images/candles/jasmine.png', description: 'Intoxicating jasmine blossoms blended with subtle musk. An exotic fragrance that transforms your space into a luxurious retreat.' },
+  { id: 5, name: 'Sandalwood Serenity', fragrance: 'Warm Sandalwood', price: 799, originalPrice: 1065, discount: 25, isNew: true, isBestseller: true, rating: 4.8, reviews: 203, image: '/images/candles/sandalwood.png', description: 'Rich, woody sandalwood from India. Grounding and spiritual, perfect for yoga practice and mindful moments.' },
+  { id: 6, name: 'Cinnamon Spice', fragrance: 'Spicy Cinnamon', price: 449, originalPrice: 449, discount: 0, isNew: false, isBestseller: false, rating: 4.5, reviews: 76, image: '/images/candles/cinnamon.png', description: 'Warm cinnamon sticks with hints of clove and nutmeg. The perfect autumn and winter companion for festive gatherings.' },
+  { id: 7, name: 'Ocean Breeze', fragrance: 'Fresh Ocean', price: 649, originalPrice: 721, discount: 10, isNew: true, isBestseller: false, rating: 4.7, reviews: 112, image: '/images/candles/ocean.png', description: 'Crisp sea salt and ocean mist with undertones of driftwood. Brings the freshness of the coast into your living space.' },
+  { id: 8, name: 'Honey & Oats', fragrance: 'Sweet Honey', price: 529, originalPrice: 622, discount: 15, isNew: false, isBestseller: false, rating: 4.6, reviews: 94, image: '/images/candles/honey.png', description: 'Golden honey drizzled over toasted oats with a hint of vanilla. Warm, comforting, and utterly delicious for your senses.' }
 ];
 
 const PINCODE_DATA = {
@@ -137,19 +137,15 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HOME PAGE - NO ADD TO CART ON FEATURED PRODUCTS =====
+// ===== HOME PAGE - NO BESTSELLERS SECTION =====
 const HomePage = () => {
   const navigate = useNavigate();
 
-  // Featured products = bestsellers
-  const featured = PRODUCTS.filter(p => p.isBestseller);
-
   return (
     <>
-      {/* Hero - Left text, Right empty for your image */}
+      {/* Hero Section */}
       <section className="hero" style={{ minHeight: '90vh' }}>
         <div className="hero-container">
-          {/* LEFT SIDE - Text only */}
           <div>
             <div className="hero-badge">
               <Leaf size={16} /> Premium Handmade Candles
@@ -187,29 +183,8 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* RIGHT SIDE - Khali jaga for your image */}
           <div className="hero-image-side">
-            {/* Yahan apni image lagao */}
             <img src="/images/home-candle.png" alt="Bloom & Aura" />
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products - NO ADD TO CART, only view */}
-      <section className="section products-section">
-        <div className="section-container">
-          <div className="section-header">
-            <span className="section-label">Featured</span>
-            <h2 className="section-title">Our Bestsellers</h2>
-            <p className="section-subtitle">Customer favorites that bring warmth and serenity to every home</p>
-          </div>
-          <div className="products-grid">
-            {featured.map(p => <HomeProductCard key={p.id} product={p} />)}
-          </div>
-          <div style={{ textAlign: 'center', marginTop: '40px' }}>
-            <button className="btn btn-secondary" onClick={() => navigate('/products')}>
-              View All Products <ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} />
-            </button>
           </div>
         </div>
       </section>
@@ -250,47 +225,7 @@ const HomePage = () => {
   );
 };
 
-// ===== HOME PRODUCT CARD - NO ADD TO CART BUTTON =====
-const HomeProductCard = ({ product }) => {
-  const navigate = useNavigate();
-
-  const getBadge = () => {
-    if (product.isNew) return <span className="product-badge badge-new">New</span>;
-    if (product.discount > 0) return <span className="product-badge badge-discount">-{product.discount}%</span>;
-    if (product.isBestseller) return <span className="product-badge badge-bestseller">Best</span>;
-    return null;
-  };
-
-  return (
-    <div className="product-card" onClick={() => navigate(`/products/${product.id}`)} style={{ cursor: 'pointer' }}>
-      <div className="product-image-wrapper">
-        {getBadge()}
-        <img src={product.image} alt={product.name} className="product-image" onError={(e) => { e.target.src = '/logo.png'; }} />
-      </div>
-      <div className="product-info">
-        <h3 className="product-name">{product.name}</h3>
-        <p className="product-fragrance">{product.fragrance}</p>
-        <div className="product-rating">
-          <Stars rating={product.rating} />
-          <span className="rating-count">({product.reviews})</span>
-        </div>
-        <div className="product-price-row">
-          <span className="price-current">₹{product.price}</span>
-          {product.originalPrice > product.price && (
-            <span className="price-original">₹{product.originalPrice}</span>
-          )}
-          {product.discount > 0 && <span className="price-discount">-{product.discount}%</span>}
-        </div>
-        {/* NO Add to Cart button - only view details */}
-        <div style={{ padding: '12px 0', textAlign: 'center', color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.9rem', borderTop: '1px solid var(--gray-100)', marginTop: '8px' }}>
-          Click to view details →
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ===== PRODUCT CARD (for Products page) =====
+// ===== PRODUCT CARD =====
 const ProductCard = ({ product, onAdd }) => {
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
