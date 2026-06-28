@@ -44,13 +44,13 @@ app.post('/order', async (req, res) => {
     from: `"Bloom & Aura" <${EMAIL_USER}>`,
     to: OWNER_EMAIL,
     replyTo: email,
-    subject: `🕯️ New Order - ${product.name}`,
+    subject: `New Order - ${product.name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-        <h2 style="color: #D4AF37;">🔥 New Order Received!</h2>
+        <h2 style="color: #D4AF37;">New Order Received!</h2>
         <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
         <h3 style="color: #2C1810;">Product: ${product.name}</h3>
-        <p><strong>Total:</strong> ₹${total}</p>
+        <p><strong>Total:</strong> Rs.${total}</p>
         <p><strong>Quantity:</strong> ${quantity || 1}</p>
         <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
         <h4 style="color: #2C1810;">Customer Details</h4>
