@@ -6,10 +6,6 @@
       "use": "@vercel/node"
     },
     {
-      "src": "api/order.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -18,10 +14,6 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/order",
-      "dest": "/api/order.js"
-    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index.js"
