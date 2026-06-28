@@ -23,7 +23,7 @@
       "dest": "/frontend/build/static/$1"
     },
     {
-      "src": "/(.*\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json))",
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json))",
       "dest": "/frontend/build/$1"
     },
     {
