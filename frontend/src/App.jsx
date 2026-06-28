@@ -187,7 +187,7 @@ const HomePage = () => {
           {/* RIGHT SIDE - Khali jaga for your image */}
           <div className="hero-image-side">
             {/* Yahan apni image lagao */}
-            {/* <img src="/images/home-candle.png" alt="Bloom & Aura" /> */}
+            <img src="/images/home-candle.png" alt="Bloom & Aura" />
           </div>
         </div>
       </section>
