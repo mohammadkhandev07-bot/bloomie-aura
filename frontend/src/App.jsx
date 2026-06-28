@@ -274,23 +274,6 @@ const ProductCard = ({ product, onAdd }) => {
 
 // ===== PRODUCTS PAGE =====
 const ProductsPage = ({ onAddToCart }) => {
-  const navigate = useNavigate();
-  const [filter, setFilter] = useState('all');
-
-  const filtered = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => {
-    if (filter === 'new') return p.isNew;
-    if (filter === 'bestseller') return p.isBestseller;
-    if (filter === 'discount') return p.discount > 0;
-    return true;
-  });
-
-  const filters = [
-    { key: 'all', label: 'All Products' },
-    { key: 'new', label: 'New Arrivals' },
-    { key: 'bestseller', label: 'Bestsellers' },
-    { key: 'discount', label: 'On Sale' }
-  ];
-
   return (
     <div className="products-section" style={{ paddingTop: '96px' }}>
       <div className="section-container">
@@ -300,18 +283,8 @@ const ProductsPage = ({ onAddToCart }) => {
           <p className="section-subtitle">Explore our premium handcrafted candles</p>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' }}>
-          {filters.map(f => (
-            <button key={f.key} className={`btn ${filter === f.key ? 'btn-primary' : 'btn-secondary'}`} 
-              onClick={() => setFilter(f.key)} style={{ padding: '10px 24px', fontSize: '0.9rem' }}>
-              {f.label}
-            </button>
-          ))}
-        </div>
-
         <div className="products-grid">
-          {filtered.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
-        </div>
+          {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
       </div>
     </div>
   );
