@@ -4,12 +4,10 @@ const app = express();
 
 app.use(express.json());
 
-// Health check
 app.get('/', (req, res) => {
   res.json({ status: 'Bloom & Aura API is running!' });
 });
 
-// Order endpoint
 app.post('/order', async (req, res) => {
   const { 
     fullName, email, phone, address, city, state, 
@@ -20,11 +18,9 @@ app.post('/order', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // ========== EMAIL CONFIG (YAHAN APNI DETAILS DAALO) ==========
-  const EMAIL_USER = 'YOUR_EMAIL@gmail.com';           // ← APNI GMAIL
-  const EMAIL_PASS = 'YOUR_APP_PASSWORD';               // ← APP PASSWORD
-  const OWNER_EMAIL = 'nimrahkhan40139@gmail.com';     // ← ORDER YE EMAIL PE JAYEGA
-  // ============================================================
+  const EMAIL_USER = 'YOUR_EMAIL@gmail.com';
+  const EMAIL_PASS = 'YOUR_APP_PASSWORD';
+  const OWNER_EMAIL = 'nimrahkhan40139@gmail.com';
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -37,16 +33,12 @@ app.post('/order', async (req, res) => {
     replyTo: email,
     subject: `🕯️ New Order - ${product.name}`,
     html: `
-      <h2>🔥 New Order Received!</h2>
+      <h2>🔥 New Order!</h2>
       <h3>Product: ${product.name}</h3>
-      <p><strong>Price:</strong> ₹${product.price} x ${quantity} = <strong>₹${total}</strong></p>
-      <hr>
-      <h3>Customer Details:</h3>
-      <p><strong>Name:</strong> ${fullName}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Total:</strong> ₹${total}</p>
+      <p><strong>Customer:</strong> ${fullName}</p>
       <p><strong>Phone:</strong> ${phone}</p>
       <p><strong>Address:</strong> ${address}, ${city}, ${state} - ${pincode}</p>
-      <p><strong>Notes:</strong> ${notes || 'None'}</p>
     `
   };
 
@@ -54,11 +46,9 @@ app.post('/order', async (req, res) => {
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ 
       success: true, 
-      message: 'Order placed successfully!',
-      orderId: 'BA' + Date.now().toString(36).toUpperCase()
+      message: 'Order placed successfully!'
     });
   } catch (error) {
-    console.error('Email error:', error);
     return res.status(500).json({ error: 'Failed to send email' });
   }
 });
