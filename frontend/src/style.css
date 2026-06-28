@@ -296,23 +296,6 @@ body {
   z-index: 1;
 }
 
-.hero-image-side {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-  background: var(--cream);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-}
-
-.hero-image-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius-xl);
-}
-
 .hero-badge {
   display: inline-flex;
   align-items: center;
