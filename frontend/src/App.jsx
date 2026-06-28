@@ -272,7 +272,7 @@ const ProductCard = ({ product, onAdd }) => {
   );
 };
 
-// ===== PRODUCTS PAGE =====
+// ===== PRODUCTS PAGE - NO FILTER BUTTONS =====
 const ProductsPage = ({ onAddToCart }) => {
   return (
     <div className="products-section" style={{ paddingTop: '96px' }}>
@@ -285,6 +285,7 @@ const ProductsPage = ({ onAddToCart }) => {
 
         <div className="products-grid">
           {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+        </div>
       </div>
     </div>
   );
