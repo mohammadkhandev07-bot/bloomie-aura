@@ -1,15 +1,14 @@
-bloomie-aura/
-│
-├── 📁 frontend/                    ✅ Vercel pe deploy
-│   ├── 📁 src/
-│   │   ├── App.jsx                 ✅ (Sab kuch yahi)
-│   │   └── style.css               ✅ (Styling)
-│   ├── 📁 public/
-│   │   ├── index.html              ✅
-│   │   └── logo.png                ✅
-│   ├── package.json                ✅
-│   └── vercel.json                 ✅
-│
-└── 📁 backend/                     ✅ Render pe deploy
-    ├── server.js                   ✅ (Sab kuch yahi)
-    └── package.json                ✅
+frontend/public/
+├── logo.png                    ← Navbar + Footer + Favicon
+├── images/
+│   ├── home-candle.png         ← Home page right side image (aapki choice)
+│   ├── placeholder-candle.jpg  ← Fallback
+│   └── candles/
+│       ├── vanilla.jpg
+│       ├── lavender.jpg
+│       ├── rose.jpg
+│       ├── jasmine.jpg
+│       ├── sandalwood.jpg
+│       ├── cinnamon.jpg
+│       ├── ocean.jpg
+│       └── honey.jpg
