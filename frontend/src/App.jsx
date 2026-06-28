@@ -518,9 +518,11 @@ const HistoryPage = () => {
 const App = () => {
   const [orderProduct, setOrderProduct] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleOrder = useCallback((product) => {
     setOrderProduct(product);
-    window.location.href = '/order';
+    navigate('/order');
   }, []);
 
   const handleSubmitOrder = useCallback(async (orderData) => {
