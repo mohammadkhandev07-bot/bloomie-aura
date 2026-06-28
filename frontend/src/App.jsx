@@ -137,9 +137,12 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HOME PAGE - CLEAN, NO CANDLE, NO SHOPPING =====
-const HomePage = () => {
+// ===== HOME PAGE - FIXED =====
+const HomePage = ({ onAddToCart }) => {
   const navigate = useNavigate();
+  
+  // Featured products = bestsellers
+  const featured = PRODUCTS.filter(p => p.isBestseller);
 
   return (
     <>
@@ -211,34 +214,34 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Features Section */}
       <section className="section" style={{ background: 'var(--cream)' }}>
         <div className="section-container">
           <div className="section-header">
-            <span className="section-label">Why Us</span>
-            <h2 className="section-title">Crafted with Care</h2>
-            <p className="section-subtitle">Every candle tells a story of passion, quality, and attention to detail</p>
+            <span className="section-label">Why Choose Us</span>
+            <h2 className="section-title">Crafted with Love</h2>
+            <p className="section-subtitle">Every candle tells a story of passion and perfection</p>
           </div>
           <div className="values-grid">
             <div className="value-card">
-              <div className="value-icon"><Leaf size={24} /></div>
+              <div className="value-icon"><Leaf size={28} /></div>
               <h3>100% Natural</h3>
               <p>Pure soy wax with no harmful chemicals or additives</p>
             </div>
             <div className="value-card">
-              <div className="value-icon"><Heart size={24} /></div>
-              <h3>Hand-Poured</h3>
-              <p>Each candle is crafted with love and precision</p>
+              <div className="value-icon"><Heart size={28} /></div>
+              <h3>Handcrafted</h3>
+              <p>Each candle is poured by hand with attention to detail</p>
             </div>
             <div className="value-card">
-              <div className="value-icon"><ClockIcon size={24} /></div>
+              <div className="value-icon"><Clock size={28} /></div>
               <h3>Long Lasting</h3>
-              <p>50+ hours of burn time for extended enjoyment</p>
+              <p>Up to 50 hours of burn time for extended enjoyment</p>
             </div>
             <div className="value-card">
-              <div className="value-icon"><Award size={24} /></div>
-              <h3>Premium Quality</h3>
-              <p>Only the finest essential oils and fragrances</p>
+              <div className="value-icon"><Gift size={28} /></div>
+              <h3>Perfect Gift</h3>
+              <p>Elegant packaging makes it ideal for any occasion</p>
             </div>
           </div>
         </div>
@@ -249,36 +252,42 @@ const HomePage = () => {
 
 // ===== PRODUCT CARD =====
 const ProductCard = ({ product, onAdd }) => {
-  const [added, setAdded] = useState(false);
   const navigate = useNavigate();
+  const [added, setAdded] = useState(false);
 
   const handleAdd = (e) => {
     e.stopPropagation();
     onAdd(product);
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  const getBadge = () => {
+    if (product.isNew) return <span className="product-badge badge-new">New</span>;
+    if (product.discount > 0) return <span className="product-badge badge-discount">-{product.discount}%</span>;
+    if (product.isBestseller) return <span className="product-badge badge-bestseller">Best</span>;
+    return null;
   };
 
   return (
-    <div className="product-card" onClick={() => navigate(`/product/${product.id}`)}>
+    <div className="product-card" onClick={() => navigate(`/products/${product.id}`)}>
       <div className="product-image-wrapper">
-        <img src={product.image} alt={product.name} className="product-image"
-          onError={(e) => { e.target.src = 'https://placehold.co/400x350/D4AF37/FFF?text=Bloom+%26+Aura'; }} />
-        {product.isNew && <span className="product-badge badge-new">New</span>}
-        {product.isBestseller && <span className="product-badge badge-bestseller" style={{ left: product.isNew ? '70px' : '16px' }}>Bestseller</span>}
-        {product.discount > 0 && <span className="product-badge badge-discount" style={{ left: (product.isNew && product.isBestseller) ? '160px' : product.isNew || product.isBestseller ? '70px' : '16px' }}>-{product.discount}%</span>}
+        {getBadge()}
+        <img src={product.image} alt={product.name} className="product-image" onError={(e) => { e.target.src = '/logo.png'; }} />
       </div>
       <div className="product-info">
         <h3 className="product-name">{product.name}</h3>
         <p className="product-fragrance">{product.fragrance}</p>
         <div className="product-rating">
           <Stars rating={product.rating} />
-          <span className="rating-count">({product.reviews} reviews)</span>
+          <span className="rating-count">({product.reviews})</span>
         </div>
         <div className="product-price-row">
-          {product.discount > 0 && <span className="price-original">₹{product.originalPrice}</span>}
           <span className="price-current">₹{product.price}</span>
-          {product.discount > 0 && <span className="price-discount">{product.discount}% OFF</span>}
+          {product.originalPrice > product.price && (
+            <span className="price-original">₹{product.originalPrice}</span>
+          )}
+          {product.discount > 0 && <span className="price-discount">-{product.discount}%</span>}
         </div>
         <button className={`btn-add-cart ${added ? 'added' : ''}`} onClick={handleAdd}>
           {added ? <><Check size={18} /> Added</> : <><ShoppingCart size={18} /> Add to Cart</>}
@@ -289,22 +298,49 @@ const ProductCard = ({ product, onAdd }) => {
 };
 
 // ===== PRODUCTS PAGE =====
-const ProductsPage = ({ onAddToCart }) => (
-  <div style={{ paddingTop: '96px' }}>
-    <section className="section products-section">
+const ProductsPage = ({ onAddToCart }) => {
+  const navigate = useNavigate();
+  const [filter, setFilter] = useState('all');
+
+  const filtered = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => {
+    if (filter === 'new') return p.isNew;
+    if (filter === 'bestseller') return p.isBestseller;
+    if (filter === 'discount') return p.discount > 0;
+    return true;
+  });
+
+  const filters = [
+    { key: 'all', label: 'All Products' },
+    { key: 'new', label: 'New Arrivals' },
+    { key: 'bestseller', label: 'Bestsellers' },
+    { key: 'discount', label: 'On Sale' }
+  ];
+
+  return (
+    <div className="products-section" style={{ paddingTop: '96px' }}>
       <div className="section-container">
         <div className="section-header">
           <span className="section-label">Collection</span>
-          <h2 className="section-title">All Products</h2>
-          <p className="section-subtitle">Handcrafted with love, made for your soul</p>
+          <h2 className="section-title">Our Products</h2>
+          <p className="section-subtitle">Explore our premium handcrafted candles</p>
         </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' }}>
+          {filters.map(f => (
+            <button key={f.key} className={`btn ${filter === f.key ? 'btn-primary' : 'btn-secondary'}`} 
+              onClick={() => setFilter(f.key)} style={{ padding: '10px 24px', fontSize: '0.9rem' }}>
+              {f.label}
+            </button>
+          ))}
+        </div>
+
         <div className="products-grid">
-          {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+          {filtered.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
         </div>
       </div>
-    </section>
-  </div>
-);
+    </div>
+  );
+};
 
 // ===== PRODUCT DETAIL PAGE =====
 const ProductDetailPage = ({ onAddToCart }) => {
@@ -313,265 +349,240 @@ const ProductDetailPage = ({ onAddToCart }) => {
   const product = PRODUCTS.find(p => p.id === parseInt(id));
   const [qty, setQty] = useState(1);
 
-  if (!product) return <div className="product-detail"><div className="detail-container">Product not found</div></div>;
+  if (!product) return (
+    <div className="product-detail" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+      <div style={{ textAlign: 'center' }}>
+        <h2>Product not found</h2>
+        <button className="btn btn-primary" onClick={() => navigate('/products')} style={{ marginTop: '20px' }}>
+          <ArrowLeft size={18} /> Back to Products
+        </button>
+      </div>
+    </div>
+  );
+
+  const related = PRODUCTS.filter(p => p.id !== product.id && p.fragrance === product.fragrance).slice(0, 3);
 
   return (
     <div className="product-detail">
       <div className="detail-container">
         <div className="detail-image-wrapper">
-          <img src={product.image} alt={product.name} className="detail-image"
-            onError={(e) => { e.target.src = 'https://placehold.co/600x600/D4AF37/FFF?text=Bloom+%26+Aura'; }} />
+          <img src={product.image} alt={product.name} className="detail-image" onError={(e) => { e.target.src = '/logo.png'; }} />
         </div>
         <div className="detail-info">
           <div className="detail-breadcrumb">
-            <Link to="/">Home</Link> <span>/</span> <Link to="/products">Products</Link> <span>/</span> <span style={{ color: 'var(--gray-800)' }}>{product.name}</span>
+            <Link to="/">Home</Link> / <Link to="/products">Products</Link> / <span>{product.name}</span>
           </div>
-          {product.isNew && <span className="product-badge badge-new" style={{ position: 'static', display: 'inline-block', marginBottom: '12px' }}>New Arrival</span>}
           <h1 className="detail-name">{product.name}</h1>
-          <p className="detail-fragrance">{product.fragrance} Fragrance</p>
+          <p className="detail-fragrance">{product.fragrance}</p>
           <div className="detail-rating">
             <Stars rating={product.rating} />
-            <span style={{ color: 'var(--gray-500)', fontSize: '0.9rem' }}>{product.rating} ({product.reviews} reviews)</span>
+            <span>({product.reviews} reviews)</span>
           </div>
           <div className="detail-price-row">
             <span className="detail-price">₹{product.price}</span>
-            {product.discount > 0 && <>
-              <span className="detail-original">₹{product.originalPrice}</span>
-              <span className="detail-discount">{product.discount}% OFF</span>
-            </>}
+            {product.originalPrice > product.price && <span className="detail-original">₹{product.originalPrice}</span>}
+            {product.discount > 0 && <span className="detail-discount">-{product.discount}% OFF</span>}
           </div>
           <p className="detail-description">{product.description}</p>
           <div className="detail-features">
-            <div className="detail-feature"><div className="detail-feature-icon"><Leaf size={18} /></div>100% Natural Soy Wax</div>
-            <div className="detail-feature"><div className="detail-feature-icon"><ClockIcon size={18} /></div>50+ Hours Burn Time</div>
-            <div className="detail-feature"><div className="detail-feature-icon"><Shield size={18} /></div>Non-Toxic & Safe</div>
-            <div className="detail-feature"><div className="detail-feature-icon"><Gift size={18} /></div>Hand-Poured in India</div>
+            <div className="detail-feature"><div className="detail-feature-icon"><Clock size={18} /></div><span>50+ Hours Burn</span></div>
+            <div className="detail-feature"><div className="detail-feature-icon"><Leaf size={18} /></div><span>Natural Soy Wax</span></div>
+            <div className="detail-feature"><div className="detail-feature-icon"><Shield size={18} /></div><span>Non-Toxic</span></div>
+            <div className="detail-feature"><div className="detail-feature-icon"><Gift size={18} /></div><span>Gift Ready</span></div>
           </div>
           <div className="quantity-selector">
             <span className="qty-label">Quantity:</span>
             <div className="qty-control">
               <button className="qty-btn" onClick={() => setQty(Math.max(1, qty - 1))}><Minus size={16} /></button>
               <span className="qty-value">{qty}</span>
-              <button className="qty-btn" onClick={() => setQty(Math.min(10, qty + 1))}><Plus size={16} /></button>
+              <button className="qty-btn" onClick={() => setQty(qty + 1)}><Plus size={16} /></button>
             </div>
           </div>
           <div className="detail-actions">
-            <button className="btn btn-primary btn-large" onClick={() => { for(let i=0;i<qty;i++) onAddToCart(product); navigate('/cart'); }}>
-              <ShoppingCart size={20} /> Add to Cart
+            <button className="btn btn-primary btn-large" onClick={() => { for(let i=0;i<qty;i++) onAddToCart(product); }}>
+              <ShoppingCart size={20} /> Add to Cart - ₹{product.price * qty}
             </button>
             <button className="btn btn-secondary btn-large" onClick={() => navigate('/cart')}>
-              Buy Now
+              View Cart
             </button>
           </div>
         </div>
       </div>
+      {related.length > 0 && (
+        <div className="section-container" style={{ marginTop: '60px' }}>
+          <h3 className="section-title" style={{ fontSize: '1.8rem', marginBottom: '32px' }}>You May Also Like</h3>
+          <div className="products-grid">
+            {related.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 // ===== CART PAGE =====
-const CartPage = ({ cart, onUpdateQty, onRemove, onCheckout }) => {
+const CartPage = ({ cart, onUpdateQty, onRemove, onClear }) => {
   const navigate = useNavigate();
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = subtotal > 500 ? 0 : 50;
-  const total = subtotal + shipping;
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+  if (cart.length === 0) return (
+    <div className="cart-page">
+      <div className="cart-container">
+        <h2 className="cart-title"><ShoppingCart size={28} /> Your Cart</h2>
+        <div className="cart-empty">
+          <div className="cart-empty-icon">🕯️</div>
+          <h3>Your cart is empty</h3>
+          <p>Discover our beautiful candles and add some to your cart</p>
+          <button className="btn btn-primary" onClick={() => navigate('/products')}>Browse Products</button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="cart-page">
       <div className="cart-container">
-        <h1 className="cart-title"><ShoppingCart size={28} /> Shopping Cart ({cart.length} items)</h1>
-        {cart.length === 0 ? (
-          <div className="cart-empty">
-            <div className="cart-empty-icon">🛒</div>
-            <h3>Your cart is empty</h3>
-            <p>Add some beautiful candles to get started</p>
-            <button className="btn btn-primary" onClick={() => navigate('/products')}>
-              Continue Shopping
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="cart-items">
-              {cart.map((item, idx) => (
-                <div className="cart-item" key={idx}>
-                  <img src={item.image} alt={item.name} className="cart-item-image"
-                    onError={(e) => { e.target.src = 'https://placehold.co/120x120/D4AF37/FFF?text=Bloom'; }} />
-                  <div className="cart-item-info">
-                    <h4>{item.name}</h4>
-                    <p>{item.fragrance}</p>
-                    <div className="qty-control" style={{ marginTop: '12px' }}>
-                      <button className="qty-btn" onClick={() => onUpdateQty(idx, Math.max(1, item.qty - 1))}><Minus size={14} /></button>
-                      <span className="qty-value">{item.qty}</span>
-                      <button className="qty-btn" onClick={() => onUpdateQty(idx, Math.min(10, item.qty + 1))}><Plus size={14} /></button>
-                    </div>
-                  </div>
-                  <div className="cart-item-actions">
-                    <span className="cart-item-price">₹{item.price * item.qty}</span>
-                    <button className="btn-remove" onClick={() => onRemove(idx)}><Trash2 size={16} /> Remove</button>
-                  </div>
+        <h2 className="cart-title"><ShoppingCart size={28} /> Your Cart ({cart.length})</h2>
+        <div className="cart-items">
+          {cart.map(item => (
+            <div className="cart-item" key={item.id}>
+              <img src={item.image} alt={item.name} className="cart-item-image" onError={(e) => { e.target.src = '/logo.png'; }} />
+              <div className="cart-item-info">
+                <h4>{item.name}</h4>
+                <p>{item.fragrance}</p>
+                <div className="qty-control" style={{ marginTop: '12px' }}>
+                  <button className="qty-btn" onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}><Minus size={14} /></button>
+                  <span className="qty-value">{item.qty}</span>
+                  <button className="qty-btn" onClick={() => onUpdateQty(item.id, item.qty + 1)}><Plus size={14} /></button>
                 </div>
-              ))}
+              </div>
+              <div className="cart-item-actions">
+                <span className="cart-item-price">₹{item.price * item.qty}</span>
+                <button className="btn-remove" onClick={() => onRemove(item.id)}><Trash2 size={16} /> Remove</button>
+              </div>
             </div>
-            <div className="cart-summary">
-              <h3>Order Summary</h3>
-              <div className="summary-row"><span>Subtotal</span><span>₹{subtotal}</span></div>
-              <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? 'FREE' : `₹${shipping}`}</span></div>
-              <div className="summary-row"><span>Tax</span><span>Included</span></div>
-              <div className="summary-row total"><span>Total</span><span>₹{total}</span></div>
-              <button className="btn btn-primary btn-checkout" onClick={onCheckout}>
-                Proceed to Checkout <ArrowLeft size={18} style={{ transform: 'rotate(180deg)' }} />
-              </button>
-              <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }} onClick={() => navigate('/products')}>
-                Continue Shopping
-              </button>
-            </div>
-          </>
-        )}
+          ))}
+        </div>
+        <div className="cart-summary">
+          <h3>Order Summary</h3>
+          <div className="summary-row"><span>Subtotal</span><span>₹{total}</span></div>
+          <div className="summary-row"><span>Shipping</span><span>Free</span></div>
+          <div className="summary-row total"><span>Total</span><span>₹{total}</span></div>
+          <button className="btn btn-primary btn-checkout" onClick={() => navigate('/checkout')}>
+            Proceed to Checkout
+          </button>
+          <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }} onClick={onClear}>
+            Clear Cart
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
 // ===== CHECKOUT PAGE =====
-const CheckoutPage = ({ cart, onOrderSuccess }) => {
+const CheckoutPage = ({ cart, onPlaceOrder }) => {
   const navigate = useNavigate();
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const [formData, setFormData] = useState({
-    fullName: '', email: '', phone: '', address: '', landmark: '', city: '', state: '', pincode: '', instructions: ''
+    fullName: '', email: '', phone: '', address: '', landmark: '', pincode: '', city: '', state: '', notes: ''
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = subtotal > 500 ? 0 : 50;
-  const total = subtotal + shipping;
-
-  const handlePincode = (e) => {
-    const code = e.target.value;
-    setFormData(prev => ({ ...prev, pincode: code }));
-    if (code.length === 6 && PINCODE_DATA[code]) {
-      setFormData(prev => ({ ...prev, city: PINCODE_DATA[code].city, state: PINCODE_DATA[code].state }));
-    }
+  const validate = () => {
+    const errs = {};
+    if (!formData.fullName.trim()) errs.fullName = 'Full name is required';
+    if (!formData.email.trim() || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(formData.email)) errs.email = 'Valid email is required';
+    if (!formData.phone.trim() || formData.phone.length !== 10) errs.phone = '10-digit phone number required';
+    if (!formData.address.trim()) errs.address = 'Address is required';
+    if (!formData.pincode.trim() || !PINCODE_DATA[formData.pincode]) errs.pincode = 'Enter valid pincode';
+    if (!formData.city.trim()) errs.city = 'City is required';
+    if (!formData.state.trim()) errs.state = 'State is required';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
-  const validate = () => {
-    const err = {};
-    if (formData.fullName.length < 3) err.fullName = 'Name must be at least 3 characters';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) err.email = 'Invalid email';
-    if (!/^\d{10}$/.test(formData.phone)) err.phone = 'Phone must be 10 digits';
-    if (formData.address.length < 5) err.address = 'Address must be at least 5 characters';
-    if (!formData.city) err.city = 'City is required';
-    if (!formData.state) err.state = 'State is required';
-    if (!/^\d{6}$/.test(formData.pincode)) err.pincode = 'Pincode must be 6 digits';
-    setErrors(err);
-    return Object.keys(err).length === 0;
+  const handlePincode = (val) => {
+    const pin = val.replace(/\\D/g, '').slice(0, 6);
+    setFormData({ ...formData, pincode: pin });
+    if (PINCODE_DATA[pin]) {
+      setFormData(prev => ({ ...prev, pincode: pin, city: PINCODE_DATA[pin].city, state: PINCODE_DATA[pin].state }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
-
-    const items = cart.map(item => ({ name: item.name, price: item.price, quantity: item.qty }));
-
-    try {
-      const res = await fetch('/api/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, items, totalAmount: total })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        onOrderSuccess(data.orderId);
-      } else {
-        alert(data.errors?.join(', ') || 'Something went wrong');
-      }
-    } catch {
-      const mockId = 'BLOOM-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-      onOrderSuccess(mockId);
-    }
+    await onPlaceOrder({ ...formData, items: cart, total });
     setLoading(false);
+    navigate('/success');
   };
 
   if (cart.length === 0) {
-    return (
-      <div className="checkout-page">
-        <div className="checkout-container">
-          <div className="cart-empty">
-            <div className="cart-empty-icon">🛒</div>
-            <h3>Your cart is empty</h3>
-            <button className="btn btn-primary" onClick={() => navigate('/products')}>Continue Shopping</button>
-          </div>
-        </div>
-      </div>
-    );
+    navigate('/cart');
+    return null;
   }
 
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        <h1 className="checkout-title">Checkout</h1>
+        <h2 className="checkout-title\">Checkout</h2>
         <form className="checkout-form" onSubmit={handleSubmit}>
           <div className="form-section">
-            <h3 className="form-section-title">Contact Information</h3>
+            <h3 className="form-section-title\">Contact Information</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label className="form-label">Full Name <span>*</span></label>
-                <input type="text" className={`form-input ${errors.fullName ? 'error' : formData.fullName ? 'success' : ''}`}
-                  value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="John Doe" />
-                {errors.fullName && <span className="error-text show">{errors.fullName}</span>}
+                <label className="form-label\">Full Name <span>*</span></label>
+                <input className={`form-input ${errors.fullName ? 'error' : ''}`} value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="John Doe" />
+                {errors.fullName && <span className="error-text show\">{errors.fullName}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label">Email <span>*</span></label>
-                <input type="email" className={`form-input ${errors.email ? 'error' : formData.email ? 'success' : ''}`}
-                  value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="john@example.com" />
-                {errors.email && <span className="error-text show">{errors.email}</span>}
+                <label className="form-label\">Email <span>*</span></label>
+                <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="john@example.com" />
+                {errors.email && <span className="error-text show\">{errors.email}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label">Phone <span>*</span></label>
-                <input type="tel" className={`form-input ${errors.phone ? 'error' : formData.phone ? 'success' : ''}`}
-                  value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
-                {errors.phone && <span className="error-text show">{errors.phone}</span>}
+                <label className="form-label\">Phone <span>*</span></label>
+                <input className={`form-input ${errors.phone ? 'error' : ''}`} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
+                {errors.phone && <span className="error-text show\">{errors.phone}</span>}
               </div>
             </div>
           </div>
 
           <div className="form-section">
-            <h3 className="form-section-title">Shipping Address</h3>
+            <h3 className="form-section-title\">Shipping Address</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label className="form-label">Address <span>*</span></label>
-                <input type="text" className={`form-input ${errors.address ? 'error' : formData.address ? 'success' : ''}`}
-                  value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="123, Main Street, Apartment 4B" />
-                {errors.address && <span className="error-text show">{errors.address}</span>}
+                <label className="form-label\">Address <span>*</span></label>
+                <input className={`form-input ${errors.address ? 'error' : ''}`} value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="123, Main Street, Apartment 4B" />
+                {errors.address && <span className="error-text show\">{errors.address}</span>}
+              </div>
+              <div className="form-group full-width">
+                <label className="form-label\">Landmark</label>
+                <input className="form-input" value={formData.landmark} onChange={e => setFormData({...formData, landmark: e.target.value})} placeholder="Near City Mall" />
               </div>
               <div className="form-group">
-                <label className="form-label">Landmark</label>
-                <input type="text" className="form-input" value={formData.landmark}
-                  onChange={e => setFormData({...formData, landmark: e.target.value})} placeholder="Near City Mall" />
+                <label className="form-label\">Pincode <span>*</span></label>
+                <input className={`form-input ${errors.pincode ? 'error' : ''}`} value={formData.pincode} onChange={e => handlePincode(e.target.value)} placeholder="400001" maxLength={6} />
+                {errors.pincode && <span className="error-text show\">{errors.pincode}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label">Pincode <span>*</span></label>
-                <input type="text" className={`form-input ${errors.pincode ? 'error' : formData.pincode ? 'success' : ''}`}
-                  value={formData.pincode} onChange={handlePincode} placeholder="400001" maxLength={6} />
-                {errors.pincode && <span className="error-text show">{errors.pincode}</span>}
+                <label className="form-label\">City <span>*</span></label>
+                <input className={`form-input ${errors.city ? 'error' : ''}`} value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
+                {errors.city && <span className="error-text show\">{errors.city}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label">City <span>*</span></label>
-                <input type="text" className={`form-input ${errors.city ? 'error' : formData.city ? 'success' : ''}`}
-                  value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
-                {errors.city && <span className="error-text show">{errors.city}</span>}
-              </div>
-              <div className="form-group">
-                <label className="form-label">State <span>*</span></label>
-                <input type="text" className={`form-input ${errors.state ? 'error' : formData.state ? 'success' : ''}`}
-                  value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
-                {errors.state && <span className="error-text show">{errors.state}</span>}
+                <label className="form-label\">State <span>*</span></label>
+                <input className={`form-input ${errors.state ? 'error' : ''}`} value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
+                {errors.state && <span className="error-text show\">{errors.state}</span>}
               </div>
             </div>
           </div>
 
           <div className="form-section">
-            <h3 className="form-section-title">Order Items</h3>
+            <h3 className="form-section-title\">Order Items</h3>
             <div className="checkout-items">
               {cart.map((item, idx) => (
                 <div className="checkout-item" key={idx}>
@@ -584,13 +595,12 @@ const CheckoutPage = ({ cart, onOrderSuccess }) => {
           </div>
 
           <div className="form-group full-width">
-            <label className="form-label">Special Instructions</label>
-            <textarea className="form-input" rows={3} value={formData.instructions}
-              onChange={e => setFormData({...formData, instructions: e.target.value})} placeholder="Gift wrapping, message card, delivery instructions..." />
+            <label className="form-label\">Special Instructions</label>
+            <textarea className="form-input" rows="3" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} placeholder="Any delivery instructions..." style={{ resize: 'vertical' }} />
           </div>
 
           <button type="submit" className="btn btn-primary btn-checkout" disabled={loading}>
-            {loading ? 'Processing...' : <>Place Order <Check size={18} /></>}
+            {loading ? 'Placing Order...' : <>Place Order <Check size={18} /></>}
           </button>
         </form>
       </div>
@@ -599,20 +609,19 @@ const CheckoutPage = ({ cart, onOrderSuccess }) => {
 };
 
 // ===== SUCCESS PAGE =====
-const SuccessPage = ({ orderId }) => {
+const SuccessPage = () => {
   const navigate = useNavigate();
+  const orderId = 'BA' + Date.now().toString(36).toUpperCase();
+
   return (
     <div className="success-page">
       <div className="success-card">
-        <div className="success-icon"><Check size={40} /></div>
-        <h2 className="success-title">Order Placed!</h2>
-        <p className="success-text">Thank you for choosing Bloom & Aura.</p>
-        <p className="success-text">Your candle is being crafted with love.</p>
-        <div className="success-order-id">{orderId}</div>
-        <p className="success-text" style={{ fontSize: '0.85rem', color: 'var(--gray-400)' }}>
-          A confirmation email has been sent to you.
-        </p>
-        <button className="btn btn-primary" style={{ marginTop: '20px' }} onClick={() => navigate('/')}>
+        <div className="success-icon\"><Check size={40} /></div>
+        <h2 className="success-title\">Order Placed!</h2>
+        <p className="success-text\">Thank you for your purchase.</p>
+        <p className="success-text\">We've sent a confirmation to your email.</p>
+        <div className="success-order-id\">{orderId}</div>
+        <button className="btn btn-primary" onClick={() => navigate('/')} style={{ marginTop: '24px' }}>
           Continue Shopping
         </button>
       </div>
@@ -624,209 +633,170 @@ const SuccessPage = ({ orderId }) => {
 const AboutPage = () => (
   <div className="about-page">
     <div className="about-hero">
-      <h1 className="about-hero-title">Our Story</h1>
-      <p className="about-hero-text">Crafting moments of serenity, one candle at a time</p>
+      <h1 className="about-hero-title\">Our Story</h1>
+      <p className="about-hero-text\">Crafting moments of tranquility, one candle at a time</p>
     </div>
-
-    <section className="about-section">
+    <div className="about-section">
       <div className="about-grid">
         <div className="about-image">
-          <img src="/images/candles/sandalwood.jpg" alt="Our Craft" onError={(e) => e.target.src='https://placehold.co/600x400/D4AF37/FFF?text=Our+Story'} />
+          <img src="/images/about.jpg" alt="About us" onError={(e) => e.target.style.display='none'} />
         </div>
         <div className="about-content">
-          <h2>Handcrafted with Passion</h2>
-          <p>Bloom & Aura was born from a simple belief: that every home deserves the warmth and tranquility of a perfectly crafted candle. Founded in 2020, we started as a small kitchen operation and have grown into a beloved brand across India.</p>
-          <p>Each candle is hand-poured in small batches using 100% natural soy wax, premium essential oils, and cotton wicks. We never compromise on quality, ensuring every product meets our exacting standards.</p>
-          <p>Our mission is to bring the art of candle-making to every Indian home, creating products that are not just beautiful but also safe, sustainable, and soul-soothing.</p>
+          <h2>Passion in Every Pour</h2>
+          <p>Bloom & Aura was born from a simple belief: everyone deserves a sanctuary. Our founder started making candles in a small kitchen, experimenting with natural soy wax and essential oils until the perfect blend was found.</p>
+          <p>Today, we continue that tradition of handcrafted excellence. Each candle is poured by hand, using only the finest natural ingredients sourced from sustainable farms across India.</p>
+          <p>From the first flicker to the last glow, we promise an experience that soothes the soul and elevates your space.</p>
         </div>
       </div>
-    </section>
-
-    <section className="about-section" style={{ background: 'var(--cream)' }}>
-      <div className="section-container">
-        <div className="section-header">
-          <span className="section-label">Our Values</span>
-          <h2 className="section-title">What We Stand For</h2>
+    </div>
+    <div className="about-section" style={{ background: 'var(--cream)' }}>
+      <div className="values-grid">
+        <div className="value-card">
+          <div className="value-icon\"><Award size={28} /></div>
+          <h3>Premium Quality</h3>
+          <p>Only the finest natural ingredients make it into our candles</p>
         </div>
-        <div className="values-grid">
-          <div className="value-card">
-            <div className="value-icon"><Leaf size={24} /></div>
-            <h3>Sustainable</h3>
-            <p>Eco-friendly materials and packaging that respect our planet</p>
-          </div>
-          <div className="value-card">
-            <div className="value-icon"><Heart size={24} /></div>
-            <h3>Authentic</h3>
-            <p>Real essential oils, no synthetic fragrances ever</p>
-          </div>
-          <div className="value-card">
-            <div className="value-icon"><Users size={24} /></div>
-            <h3>Community</h3>
-            <p>Supporting local artisans and small businesses</p>
-          </div>
-          <div className="value-card">
-            <div className="value-icon"><Sparkles size={24} /></div>
-            <h3>Quality</h3>
-            <p>Rigorous testing ensures every candle is perfect</p>
-          </div>
+        <div className="value-card">
+          <div className="value-icon\"><Users size={28} /></div>
+          <h3>Community</h3>
+          <p>Supporting local artisans and sustainable farming</p>
+        </div>
+        <div className="value-card">
+          <div className="value-icon\"><Sparkles size={28} /></div>
+          <h3>Innovation</h3>
+          <p>Constantly exploring new scents and techniques</p>
+        </div>
+        <div className="value-card">
+          <div className="value-icon\"><Heart size={28} /></div>
+          <h3>Made with Love</h3>
+          <p>Every candle is a labor of love from our family to yours</p>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 );
 
 // ===== HISTORY PAGE =====
-const HistoryPage = ({ orders }) => (
-  <div className="history-page">
-    <div className="history-container">
-      <h1 className="history-title"><Package size={28} /> Order History</h1>
-      {orders.length === 0 ? (
+const HistoryPage = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('bloomie-orders');
+    if (saved) setOrders(JSON.parse(saved));
+  }, []);
+
+  if (orders.length === 0) return (
+    <div className="history-page">
+      <div className="history-container">
+        <h2 className="history-title\">Order History</h2>
         <div className="history-empty">
-          <div className="cart-empty-icon">📦</div>
+          <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📦</div>
           <h3>No orders yet</h3>
-          <p>Your order history will appear here</p>
-          <button className="btn btn-primary" onClick={() => window.location.href='/products'}>
-            Start Shopping
+          <p>Your completed orders will appear here</p>
+          <button className="btn btn-primary" onClick={() => window.location.href = '/products'} style={{ marginTop: '20px' }}>
+            Shop Now
           </button>
         </div>
-      ) : (
-        orders.map((order, idx) => (
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="history-page">
+      <div className="history-container">
+        <h2 className="history-title\">Order History</h2>
+        {orders.map((order, idx) => (
           <div className="history-card" key={idx}>
             <div className="history-header">
               <div>
-                <span className="history-id">{order.orderId}</span>
-                <span className="history-date" style={{ marginLeft: '16px' }}>{new Date(order.createdAt).toLocaleDateString()}</span>
+                <span className="history-id\">{order.id || 'BA' + Date.now()}</span>
+                <span className="history-date\" style={{ marginLeft: '16px' }}>{order.date || new Date().toLocaleDateString()}</span>
               </div>
-              <span className={`history-status status-${order.status}`}>{order.status}</span>
+              <span className="history-status status-pending\">Processing</span>
             </div>
             <div className="history-items">
-              {order.items.map((item, i) => (
+              {order.items?.map((item, i) => (
                 <div className="history-item" key={i}>
-                  <span>{item.name} x {item.quantity}</span>
-                  <span>₹{item.price * item.quantity}</span>
+                  <span>{item.name} x {item.qty}</span>
+                  <span>₹{item.price * item.qty}</span>
                 </div>
               ))}
             </div>
-            <div className="history-total">
-              <span>Total</span>
-              <span>₹{order.totalAmount}</span>
-            </div>
+            <div className="history-total\"><span>Total</span><span>₹{order.total}</span></div>
           </div>
-        ))
-      )}
-    </div>
-  </div>
-);
-
-// ===== FOOTER =====
-const Footer = () => (
-  <footer className="footer">
-    <div className="footer-container">
-      <div className="footer-brand">
-        <img src="/logo.png" alt="Bloom & Aura" className="footer-logo" onError={(e) => e.target.style.display='none'} />
-        <h3 className="footer-brand-name">Bloom & Aura</h3>
-        <p className="footer-desc">Premium handcrafted candles made with love and natural ingredients. Bringing warmth and serenity to every home since 2020.</p>
-        <div className="social-icons">
-          <a href="#" className="social-icon" aria-label="Instagram">📷</a>
-          <a href="#" className="social-icon" aria-label="Facebook">📘</a>
-          <a href="#" className="social-icon" aria-label="Twitter">🐦</a>
-          <a href="#" className="social-icon" aria-label="Pinterest">📌</a>
-        </div>
-      </div>
-      <div>
-        <h4 className="footer-title">Quick Links</h4>
-        <ul className="footer-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/products">Products</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/cart">Cart</Link></li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="footer-title">Support</h4>
-        <ul className="footer-links">
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div className="footer-contact">
-        <h4 className="footer-title">Contact</h4>
-        <p><MapPin size={16} /> 123 Candle Street, Mumbai</p>
-        <p><Phone size={16} /> +91 98765 43210</p>
-        <p><Mail size={16} /> hello@bloomandaura.com</p>
-        <p><ClockIcon size={16} /> Mon-Sat: 10AM - 8PM</p>
+        ))}
       </div>
     </div>
-    <div className="footer-bottom">
-      <p>Made with ❤️ in India | Bloom & Aura © 2024</p>
-    </div>
-  </footer>
-);
+  );
+};
 
 // ===== MAIN APP =====
-function App() {
-  const [cart, setCart] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [confettiActive, setConfettiActive] = useState(false);
-  const [orderId, setOrderId] = useState(null);
-  const navigate = useNavigate();
+const App = () => {
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem('bloomie-cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('bloomie-cart', JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = useCallback((product) => {
     setCart(prev => {
-      const existing = prev.findIndex(item => item.id === product.id);
-      if (existing >= 0) {
-        const updated = [...prev];
-        updated[existing].qty += 1;
-        return updated;
+      const existing = prev.find(item => item.id === product.id);
+      if (existing) {
+        return prev.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item);
       }
       return [...prev, { ...product, qty: 1 }];
     });
   }, []);
 
-  const updateQty = useCallback((idx, qty) => {
-    setCart(prev => {
-      const updated = [...prev];
-      updated[idx].qty = qty;
-      return updated;
-    });
+  const updateQty = useCallback((id, qty) => {
+    setCart(prev => prev.map(item => item.id === id ? { ...item, qty } : item));
   }, []);
 
-  const removeFromCart = useCallback((idx) => {
-    setCart(prev => prev.filter((_, i) => i !== idx));
+  const removeFromCart = useCallback((id) => {
+    setCart(prev => prev.filter(item => item.id !== id));
   }, []);
 
-  const handleOrderSuccess = (id) => {
-    setOrderId(id);
-    setConfettiActive(true);
-    // Save order to history
-    const orderItems = cart.map(item => ({ name: item.name, price: item.price, quantity: item.qty }));
-    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0) + (cart.reduce((sum, item) => sum + item.price * item.qty, 0) > 500 ? 0 : 50);
-    setOrders(prev => [...prev, { orderId: id, items: orderItems, totalAmount: total, status: 'pending', createdAt: new Date().toISOString() }]);
+  const clearCart = useCallback(() => {
     setCart([]);
-    navigate('/success');
-  };
+  }, []);
 
-  const handleConfettiComplete = () => setConfettiActive(false);
+  const placeOrder = useCallback(async (orderData) => {
+    const orders = JSON.parse(localStorage.getItem('bloomie-orders') || '[]');
+    orders.unshift({ ...orderData, id: 'BA' + Date.now().toString(36).toUpperCase(), date: new Date().toLocaleDateString() });
+    localStorage.setItem('bloomie-orders', JSON.stringify(orders));
+    setCart([]);
+    setShowConfetti(true);
+    try {
+      await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+    } catch (e) { console.log('Email notification failed', e); }
+  }, []);
+
+  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
-    <div className="app">
-      <Navbar cartCount={cart.reduce((sum, item) => sum + item.qty, 0)} />
+    <>
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
+      <Navbar cartCount={cartCount} />
       <Routes>
         <Route path="/" element={<HomePage onAddToCart={addToCart} />} />
         <Route path="/products" element={<ProductsPage onAddToCart={addToCart} />} />
-        <Route path="/product/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
-        <Route path="/cart" element={<CartPage cart={cart} onUpdateQty={updateQty} onRemove={removeFromCart} onCheckout={() => navigate('/checkout')} />} />
-        <Route path="/checkout" element={<CheckoutPage cart={cart} onOrderSuccess={handleOrderSuccess} />} />
-        <Route path="/success" element={<SuccessPage orderId={orderId} />} />
+        <Route path="/products/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
+        <Route path="/cart" element={<CartPage cart={cart} onUpdateQty={updateQty} onRemove={removeFromCart} onClear={clearCart} />} />
+        <Route path="/checkout" element={<CheckoutPage cart={cart} onPlaceOrder={placeOrder} />} />
+        <Route path="/success" element={<SuccessPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/history" element={<HistoryPage orders={orders} />} />
+        <Route path="/history" element={<HistoryPage />} />
       </Routes>
-      <Footer />
-      <Confetti active={confettiActive} onComplete={handleConfettiComplete} />
-    </div>
+    </>
   );
-}
+};
 
 export default App;
