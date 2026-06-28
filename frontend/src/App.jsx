@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ShoppingCart, Trash2, Plus, Minus, Star, Leaf, Clock, Shield, Gift, Heart, Menu, X, Check, ArrowLeft, MapPin, Phone, Mail, Clock as ClockIcon, Package, Truck, Award, Users, Sparkles } from 'lucide-react';
+import { ShoppingCart, Trash2, Plus, Minus, Star, Leaf, Clock, Shield, Gift, Heart, Menu, X, Check, ArrowLeft, MapPin, Phone, Mail, Award, Users, Sparkles, Package, Truck } from 'lucide-react';
 import './style.css';
 
 // ===== PRODUCT DATA =====
@@ -31,57 +31,7 @@ const PINCODE_DATA = {
   '700020': { city: 'Kolkata', state: 'West Bengal' }
 };
 
-// ===== CONFETTI =====
-const Confetti = ({ active, onComplete }) => {
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
-
-  useEffect(() => {
-    if (!active) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const colors = ['#D4AF37', '#FF6B35', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#F38181'];
-    const particles = Array.from({ length: 200 }, () => ({
-      x: Math.random() * canvas.width, y: -20,
-      size: Math.random() * 10 + 4,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      speedY: Math.random() * 4 + 2,
-      speedX: (Math.random() - 0.5) * 5,
-      rotation: Math.random() * 360,
-      rotationSpeed: (Math.random() - 0.5) * 12,
-      opacity: 1
-    }));
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let activeParticles = 0;
-      particles.forEach(p => {
-        if (p.opacity <= 0) return;
-        activeParticles++;
-        p.y += p.speedY; p.x += p.speedX;
-        p.rotation += p.rotationSpeed;
-        p.opacity -= 0.004;
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate((p.rotation * Math.PI) / 180);
-        ctx.globalAlpha = Math.max(0, p.opacity);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-        ctx.restore();
-      });
-      if (activeParticles > 0) {
-        animationRef.current = requestAnimationFrame(animate);
-      } else { onComplete(); }
-    };
-    animate();
-    return () => { if (animationRef.current) cancelAnimationFrame(animationRef.current); };
-  }, [active, onComplete]);
-
-  if (!active) return null;
-  return <canvas ref={canvasRef} className="confetti-canvas" />;
-};
+const OWNER_EMAIL = 'nimrahkhan40139@gmail.com';
 
 // ===== STARS =====
 const Stars = ({ rating }) => (
@@ -93,7 +43,7 @@ const Stars = ({ rating }) => (
 );
 
 // ===== NAVBAR =====
-const Navbar = ({ cartCount }) => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -118,17 +68,7 @@ const Navbar = ({ cartCount }) => {
           <li><Link to="/products" className={isActive('/products') ? 'active' : ''} onClick={() => setMenuOpen(false)}>Products</Link></li>
           <li><Link to="/about" className={isActive('/about') ? 'active' : ''} onClick={() => setMenuOpen(false)}>About</Link></li>
           <li><Link to="/history" className={isActive('/history') ? 'active' : ''} onClick={() => setMenuOpen(false)}>History</Link></li>
-          <li><Link to="/cart" className={isActive('/cart') ? 'active' : ''} onClick={() => setMenuOpen(false)}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShoppingCart size={18} /> Cart
-            </span>
-          </Link></li>
         </ul>
-        <Link to="/cart" className="nav-cart" style={{ marginRight: '16px' }}>
-          <ShoppingCart size={20} />
-          <span>Cart</span>
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-        </Link>
         <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -137,13 +77,12 @@ const Navbar = ({ cartCount }) => {
   );
 };
 
-// ===== HOME PAGE - NO BESTSELLERS SECTION =====
+// ===== HOME PAGE =====
 const HomePage = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      {/* Hero Section */}
       <section className="hero" style={{ minHeight: '90vh' }}>
         <div className="hero-container">
           <div>
@@ -182,14 +121,12 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-
           <div className="hero-image-side">
             <img src="/images/home-candle.png" alt="Bloom & Aura" />
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="section" style={{ background: 'var(--cream)' }}>
         <div className="section-container">
           <div className="section-header">
@@ -201,22 +138,22 @@ const HomePage = () => {
             <div className="value-card">
               <div className="value-icon"><Leaf size={28} /></div>
               <h3>100% Natural</h3>
-              <p>Pure soy wax with no harmful chemicals or additives</p>
+              <p>Pure soy wax with no harmful chemicals</p>
             </div>
             <div className="value-card">
               <div className="value-icon"><Heart size={28} /></div>
               <h3>Handcrafted</h3>
-              <p>Each candle is poured by hand with attention to detail</p>
+              <p>Each candle is poured by hand</p>
             </div>
             <div className="value-card">
               <div className="value-icon"><Clock size={28} /></div>
               <h3>Long Lasting</h3>
-              <p>Up to 50 hours of burn time for extended enjoyment</p>
+              <p>Up to 50 hours of burn time</p>
             </div>
             <div className="value-card">
               <div className="value-icon"><Gift size={28} /></div>
               <h3>Perfect Gift</h3>
-              <p>Elegant packaging makes it ideal for any occasion</p>
+              <p>Elegant packaging for any occasion</p>
             </div>
           </div>
         </div>
@@ -225,29 +162,13 @@ const HomePage = () => {
   );
 };
 
-// ===== PRODUCT CARD =====
-const ProductCard = ({ product, onAdd }) => {
+// ===== PRODUCT CARD - NO BADGES =====
+const ProductCard = ({ product, onOrder }) => {
   const navigate = useNavigate();
-  const [added, setAdded] = useState(false);
-
-  const handleAdd = (e) => {
-    e.stopPropagation();
-    onAdd(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
-  };
-
-  const getBadge = () => {
-    if (product.isNew) return <span className="product-badge badge-new">New</span>;
-    if (product.discount > 0) return <span className="product-badge badge-discount">-{product.discount}%</span>;
-    if (product.isBestseller) return <span className="product-badge badge-bestseller">Best</span>;
-    return null;
-  };
 
   return (
-    <div className="product-card" onClick={() => navigate(`/products/${product.id}`)}>
-      <div className="product-image-wrapper">
-        {getBadge()}
+    <div className="product-card" style={{ cursor: 'pointer' }}>
+      <div className="product-image-wrapper" onClick={() => navigate(`/products/${product.id}`)}>
         <img src={product.image} alt={product.name} className="product-image" onError={(e) => { e.target.src = '/logo.png'; }} />
       </div>
       <div className="product-info">
@@ -264,16 +185,16 @@ const ProductCard = ({ product, onAdd }) => {
           )}
           {product.discount > 0 && <span className="price-discount">-{product.discount}%</span>}
         </div>
-        <button className={`btn-add-cart ${added ? 'added' : ''}`} onClick={handleAdd}>
-          {added ? <><Check size={18} /> Added</> : <><ShoppingCart size={18} /> Add to Cart</>}
+        <button className="btn-add-cart" onClick={() => onOrder(product)}>
+          <ShoppingCart size={18} /> Order Now
         </button>
       </div>
     </div>
   );
 };
 
-// ===== PRODUCTS PAGE - NO FILTER BUTTONS =====
-const ProductsPage = ({ onAddToCart }) => {
+// ===== PRODUCTS PAGE =====
+const ProductsPage = ({ onOrder }) => {
   return (
     <div className="products-section" style={{ paddingTop: '96px' }}>
       <div className="section-container">
@@ -282,9 +203,8 @@ const ProductsPage = ({ onAddToCart }) => {
           <h2 className="section-title">Our Products</h2>
           <p className="section-subtitle">Explore our premium handcrafted candles</p>
         </div>
-
         <div className="products-grid">
-          {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
+          {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onOrder={onOrder} />)}
         </div>
       </div>
     </div>
@@ -292,11 +212,10 @@ const ProductsPage = ({ onAddToCart }) => {
 };
 
 // ===== PRODUCT DETAIL PAGE =====
-const ProductDetailPage = ({ onAddToCart }) => {
+const ProductDetailPage = ({ onOrder }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const product = PRODUCTS.find(p => p.id === parseInt(id));
-  const [qty, setQty] = useState(1);
 
   if (!product) return (
     <div className="product-detail" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
@@ -308,8 +227,6 @@ const ProductDetailPage = ({ onAddToCart }) => {
       </div>
     </div>
   );
-
-  const related = PRODUCTS.filter(p => p.id !== product.id && p.fragrance === product.fragrance).slice(0, 3);
 
   return (
     <div className="product-detail">
@@ -339,89 +256,8 @@ const ProductDetailPage = ({ onAddToCart }) => {
             <div className="detail-feature"><div className="detail-feature-icon"><Shield size={18} /></div><span>Non-Toxic</span></div>
             <div className="detail-feature"><div className="detail-feature-icon"><Gift size={18} /></div><span>Gift Ready</span></div>
           </div>
-          <div className="quantity-selector">
-            <span className="qty-label">Quantity:</span>
-            <div className="qty-control">
-              <button className="qty-btn" onClick={() => setQty(Math.max(1, qty - 1))}><Minus size={16} /></button>
-              <span className="qty-value">{qty}</span>
-              <button className="qty-btn" onClick={() => setQty(qty + 1)}><Plus size={16} /></button>
-            </div>
-          </div>
-          <div className="detail-actions">
-            <button className="btn btn-primary btn-large" onClick={() => { for(let i=0;i<qty;i++) onAddToCart(product); }}>
-              <ShoppingCart size={20} /> Add to Cart - ₹{product.price * qty}
-            </button>
-            <button className="btn btn-secondary btn-large" onClick={() => navigate('/cart')}>
-              View Cart
-            </button>
-          </div>
-        </div>
-      </div>
-      {related.length > 0 && (
-        <div className="section-container" style={{ marginTop: '60px' }}>
-          <h3 className="section-title" style={{ fontSize: '1.8rem', marginBottom: '32px' }}>You May Also Like</h3>
-          <div className="products-grid">
-            {related.map(p => <ProductCard key={p.id} product={p} onAdd={onAddToCart} />)}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ===== CART PAGE =====
-const CartPage = ({ cart, onUpdateQty, onRemove, onClear }) => {
-  const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-  if (cart.length === 0) return (
-    <div className="cart-page">
-      <div className="cart-container">
-        <h2 className="cart-title"><ShoppingCart size={28} /> Your Cart</h2>
-        <div className="cart-empty">
-          <div className="cart-empty-icon">🕯️</div>
-          <h3>Your cart is empty</h3>
-          <p>Discover our beautiful candles and add some to your cart</p>
-          <button className="btn btn-primary" onClick={() => navigate('/products')}>Browse Products</button>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="cart-page">
-      <div className="cart-container">
-        <h2 className="cart-title"><ShoppingCart size={28} /> Your Cart ({cart.length})</h2>
-        <div className="cart-items">
-          {cart.map(item => (
-            <div className="cart-item" key={item.id}>
-              <img src={item.image} alt={item.name} className="cart-item-image" onError={(e) => { e.target.src = '/logo.png'; }} />
-              <div className="cart-item-info">
-                <h4>{item.name}</h4>
-                <p>{item.fragrance}</p>
-                <div className="qty-control" style={{ marginTop: '12px' }}>
-                  <button className="qty-btn" onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}><Minus size={14} /></button>
-                  <span className="qty-value">{item.qty}</span>
-                  <button className="qty-btn" onClick={() => onUpdateQty(item.id, item.qty + 1)}><Plus size={14} /></button>
-                </div>
-              </div>
-              <div className="cart-item-actions">
-                <span className="cart-item-price">₹{item.price * item.qty}</span>
-                <button className="btn-remove" onClick={() => onRemove(item.id)}><Trash2 size={16} /> Remove</button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="cart-summary">
-          <h3>Order Summary</h3>
-          <div className="summary-row"><span>Subtotal</span><span>₹{total}</span></div>
-          <div className="summary-row"><span>Shipping</span><span>Free</span></div>
-          <div className="summary-row total"><span>Total</span><span>₹{total}</span></div>
-          <button className="btn btn-primary btn-checkout" onClick={() => navigate('/checkout')}>
-            Proceed to Checkout
-          </button>
-          <button className="btn btn-secondary" style={{ width: '100%', marginTop: '12px' }} onClick={onClear}>
-            Clear Cart
+          <button className="btn btn-primary btn-large" onClick={() => onOrder(product)}>
+            <ShoppingCart size={20} /> Order Now - ₹{product.price}
           </button>
         </div>
       </div>
@@ -429,15 +265,20 @@ const CartPage = ({ cart, onUpdateQty, onRemove, onClear }) => {
   );
 };
 
-// ===== CHECKOUT PAGE =====
-const CheckoutPage = ({ cart, onPlaceOrder }) => {
+// ===== ORDER FORM PAGE =====
+const OrderFormPage = ({ product, onSubmitOrder }) => {
   const navigate = useNavigate();
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const [formData, setFormData] = useState({
-    fullName: '', email: '', phone: '', address: '', landmark: '', pincode: '', city: '', state: '', notes: ''
+    fullName: '', email: '', phone: '', address: '', landmark: '', pincode: '', city: '', state: '', quantity: 1, notes: ''
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  if (!product) {
+    navigate('/products');
+    return null;
+  }
 
   const validate = () => {
     const errs = {};
@@ -454,7 +295,7 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
 
   const handlePincode = (val) => {
     const pin = val.replace(/\D/g, '').slice(0, 6);
-    setFormData({ ...formData, pincode: pin });
+    setFormData(prev => ({ ...prev, pincode: pin }));
     if (PINCODE_DATA[pin]) {
       setFormData(prev => ({ ...prev, pincode: pin, city: PINCODE_DATA[pin].city, state: PINCODE_DATA[pin].state }));
     }
@@ -464,36 +305,71 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    await onPlaceOrder({ ...formData, items: cart, total });
+    await onSubmitOrder({ ...formData, product, total: product.price * formData.quantity });
     setLoading(false);
-    navigate('/success');
+    setSubmitted(true);
   };
 
-  if (cart.length === 0) {
-    navigate('/cart');
-    return null;
+  if (submitted) {
+    return (
+      <div className="success-page">
+        <div className="success-card">
+          <div className="success-icon"><Check size={40} /></div>
+          <h2 className="success-title">Order Placed!</h2>
+          <p className="success-text">Thank you for your order.</p>
+          <p className="success-text">We will contact you shortly.</p>
+          <button className="btn btn-primary" onClick={() => navigate('/products')} style={{ marginTop: '24px' }}>
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="checkout-page">
       <div className="checkout-container">
-        <h2 className="checkout-title">Checkout</h2>
+        <h2 className="checkout-title">Place Your Order</h2>
+
+        {/* Product Summary */}
+        <div className="checkout-form" style={{ marginBottom: '24px', padding: '24px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <img src={product.image} alt={product.name} style={{ width: '100px', height: '100px', borderRadius: '12px', objectFit: 'cover' }} onError={(e) => { e.target.src = '/logo.png'; }} />
+          <div>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--brown)' }}>{product.name}</h3>
+            <p style={{ color: 'var(--gray-500)' }}>{product.fragrance}</p>
+            <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--brown)' }}>₹{product.price}</p>
+          </div>
+        </div>
+
         <form className="checkout-form" onSubmit={handleSubmit}>
           <div className="form-section">
-            <h3 className="form-section-title">Contact Information</h3>
+            <h3 className="form-section-title">Product Quantity</h3>
+            <div className="quantity-selector" style={{ marginBottom: '0' }}>
+              <span className="qty-label">Quantity:</span>
+              <div className="qty-control">
+                <button type="button" className="qty-btn" onClick={() => setFormData(prev => ({ ...prev, quantity: Math.max(1, prev.quantity - 1) }))}><Minus size={16} /></button>
+                <span className="qty-value">{formData.quantity}</span>
+                <button type="button" className="qty-btn" onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 1 }))}><Plus size={16} /></button>
+              </div>
+              <span style={{ fontWeight: 700, color: 'var(--brown)', marginLeft: '20px' }}>Total: ₹{product.price * formData.quantity}</span>
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3 className="form-section-title">Personal Details</h3>
             <div className="form-grid">
               <div className="form-group full-width">
                 <label className="form-label">Full Name <span>*</span></label>
-                <input className={`form-input ${errors.fullName ? 'error' : ''}`} value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="John Doe" />
+                <input className={`form-input ${errors.fullName ? 'error' : ''}`} value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="Enter your full name" />
                 {errors.fullName && <span className="error-text show">{errors.fullName}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Email <span>*</span></label>
-                <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="john@example.com" />
+                <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="your@email.com" />
                 {errors.email && <span className="error-text show">{errors.email}</span>}
               </div>
               <div className="form-group">
-                <label className="form-label">Phone <span>*</span></label>
+                <label className="form-label">Phone Number <span>*</span></label>
                 <input className={`form-input ${errors.phone ? 'error' : ''}`} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
                 {errors.phone && <span className="error-text show">{errors.phone}</span>}
               </div>
@@ -504,13 +380,9 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
             <h3 className="form-section-title">Shipping Address</h3>
             <div className="form-grid">
               <div className="form-group full-width">
-                <label className="form-label">Address <span>*</span></label>
-                <input className={`form-input ${errors.address ? 'error' : ''}`} value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="123, Main Street, Apartment 4B" />
+                <label className="form-label">Complete Address <span>*</span></label>
+                <textarea className={`form-input ${errors.address ? 'error' : ''}`} rows="2" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="House no, Street, Area, Landmark..." style={{ resize: 'vertical' }} />
                 {errors.address && <span className="error-text show">{errors.address}</span>}
-              </div>
-              <div className="form-group full-width">
-                <label className="form-label">Landmark</label>
-                <input className="form-input" value={formData.landmark} onChange={e => setFormData({...formData, landmark: e.target.value})} placeholder="Near City Mall" />
               </div>
               <div className="form-group">
                 <label className="form-label">Pincode <span>*</span></label>
@@ -527,52 +399,17 @@ const CheckoutPage = ({ cart, onPlaceOrder }) => {
                 <input className={`form-input ${errors.state ? 'error' : ''}`} value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
                 {errors.state && <span className="error-text show">{errors.state}</span>}
               </div>
+              <div className="form-group full-width">
+                <label className="form-label">Additional Notes</label>
+                <textarea className="form-input" rows="2" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} placeholder="Any delivery instructions..." style={{ resize: 'vertical' }} />
+              </div>
             </div>
-          </div>
-
-          <div className="form-section">
-            <h3 className="form-section-title">Order Items</h3>
-            <div className="checkout-items">
-              {cart.map((item, idx) => (
-                <div className="checkout-item" key={idx}>
-                  <span>{item.name} x {item.qty}</span>
-                  <span>₹{item.price * item.qty}</span>
-                </div>
-              ))}
-              <div className="checkout-total"><span>Total</span><span>₹{total}</span></div>
-            </div>
-          </div>
-
-          <div className="form-group full-width">
-            <label className="form-label">Special Instructions</label>
-            <textarea className="form-input" rows="3" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} placeholder="Any delivery instructions..." style={{ resize: 'vertical' }} />
           </div>
 
           <button type="submit" className="btn btn-primary btn-checkout" disabled={loading}>
             {loading ? 'Placing Order...' : <>Place Order <Check size={18} /></>}
           </button>
         </form>
-      </div>
-    </div>
-  );
-};
-
-// ===== SUCCESS PAGE =====
-const SuccessPage = () => {
-  const navigate = useNavigate();
-  const orderId = 'BA' + Date.now().toString(36).toUpperCase();
-
-  return (
-    <div className="success-page">
-      <div className="success-card">
-        <div className="success-icon"><Check size={40} /></div>
-        <h2 className="success-title">Order Placed!</h2>
-        <p className="success-text">Thank you for your purchase.</p>
-        <p className="success-text">We've sent a confirmation to your email.</p>
-        <div className="success-order-id">{orderId}</div>
-        <button className="btn btn-primary" onClick={() => navigate('/')} style={{ marginTop: '24px' }}>
-          Continue Shopping
-        </button>
       </div>
     </div>
   );
@@ -603,22 +440,22 @@ const AboutPage = () => (
         <div className="value-card">
           <div className="value-icon"><Award size={28} /></div>
           <h3>Premium Quality</h3>
-          <p>Only the finest natural ingredients make it into our candles</p>
+          <p>Only the finest natural ingredients</p>
         </div>
         <div className="value-card">
           <div className="value-icon"><Users size={28} /></div>
           <h3>Community</h3>
-          <p>Supporting local artisans and sustainable farming</p>
+          <p>Supporting local artisans</p>
         </div>
         <div className="value-card">
           <div className="value-icon"><Sparkles size={28} /></div>
           <h3>Innovation</h3>
-          <p>Constantly exploring new scents and techniques</p>
+          <p>Exploring new scents</p>
         </div>
         <div className="value-card">
           <div className="value-icon"><Heart size={28} /></div>
           <h3>Made with Love</h3>
-          <p>Every candle is a labor of love from our family to yours</p>
+          <p>From our family to yours</p>
         </div>
       </div>
     </div>
@@ -664,12 +501,10 @@ const HistoryPage = () => {
               <span className="history-status status-pending">Processing</span>
             </div>
             <div className="history-items">
-              {order.items?.map((item, i) => (
-                <div className="history-item" key={i}>
-                  <span>{item.name} x {item.qty}</span>
-                  <span>₹{item.price * item.qty}</span>
-                </div>
-              ))}
+              <div className="history-item">
+                <span>{order.product?.name} x {order.quantity}</span>
+                <span>₹{order.total}</span>
+              </div>
             </div>
             <div className="history-total"><span>Total</span><span>₹{order.total}</span></div>
           </div>
@@ -681,66 +516,46 @@ const HistoryPage = () => {
 
 // ===== MAIN APP =====
 const App = () => {
-  const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('bloomie-cart');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [orderProduct, setOrderProduct] = useState(null);
 
-  useEffect(() => {
-    localStorage.setItem('bloomie-cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const addToCart = useCallback((product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item);
-      }
-      return [...prev, { ...product, qty: 1 }];
-    });
+  const handleOrder = useCallback((product) => {
+    setOrderProduct(product);
+    window.location.href = '/order';
   }, []);
 
-  const updateQty = useCallback((id, qty) => {
-    setCart(prev => prev.map(item => item.id === id ? { ...item, qty } : item));
-  }, []);
-
-  const removeFromCart = useCallback((id) => {
-    setCart(prev => prev.filter(item => item.id !== id));
-  }, []);
-
-  const clearCart = useCallback(() => {
-    setCart([]);
-  }, []);
-
-  const placeOrder = useCallback(async (orderData) => {
+  const handleSubmitOrder = useCallback(async (orderData) => {
     const orders = JSON.parse(localStorage.getItem('bloomie-orders') || '[]');
-    orders.unshift({ ...orderData, id: 'BA' + Date.now().toString(36).toUpperCase(), date: new Date().toLocaleDateString() });
+    orders.unshift({ 
+      ...orderData, 
+      id: 'BA' + Date.now().toString(36).toUpperCase(), 
+      date: new Date().toLocaleDateString() 
+    });
     localStorage.setItem('bloomie-orders', JSON.stringify(orders));
-    setCart([]);
-    setShowConfetti(true);
+
+    // Send email via API
     try {
       await fetch('/api/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderData)
+        body: JSON.stringify({
+          ...orderData,
+          toEmail: OWNER_EMAIL,
+          subject: `New Order - ${orderData.product.name} from ${orderData.fullName}`
+        })
       });
-    } catch (e) { console.log('Email notification failed', e); }
+    } catch (e) { 
+      console.log('Email API failed, order saved locally', e); 
+    }
   }, []);
-
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
   return (
     <>
-      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
-      <Navbar cartCount={cartCount} />
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/products" element={<ProductsPage onAddToCart={addToCart} />} />
-        <Route path="/products/:id" element={<ProductDetailPage onAddToCart={addToCart} />} />
-        <Route path="/cart" element={<CartPage cart={cart} onUpdateQty={updateQty} onRemove={removeFromCart} onClear={clearCart} />} />
-        <Route path="/checkout" element={<CheckoutPage cart={cart} onPlaceOrder={placeOrder} />} />
-        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/products" element={<ProductsPage onOrder={handleOrder} />} />
+        <Route path="/products/:id" element={<ProductDetailPage onOrder={handleOrder} />} />
+        <Route path="/order" element={<OrderFormPage product={orderProduct} onSubmitOrder={handleSubmitOrder} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/history" element={<HistoryPage />} />
       </Routes>
