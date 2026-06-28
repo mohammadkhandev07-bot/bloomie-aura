@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, Link, useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ShoppingCart, Trash2, Plus, Minus, Star, Leaf, Clock, Shield, Gift, Heart, Menu, X, Check, ArrowLeft, MapPin, Phone, Mail, Award, Users, Sparkles, Package, Truck } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Star, Leaf, Clock, Shield, Gift, Heart, Menu, X, Check, ArrowLeft, Award, Users, Sparkles } from 'lucide-react';
 import './style.css';
 
 // ===== PRODUCT DATA =====
@@ -57,9 +57,9 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="nav-brand">
-          <img src="/logo.png" alt="Bloom & Aura" className="nav-logo" onError={(e) => e.target.style.display='none'} />
+          <img src="/logo.png" alt="Bloom and Aura" className="nav-logo" onError={(e) => e.target.style.display='none'} />
           <div>
-            <span className="nav-brand-text">Bloom & Aura</span>
+            <span className="nav-brand-text">Bloom and Aura</span>
             <span className="nav-brand-tagline">blooming beauty, lasting aura</span>
           </div>
         </Link>
@@ -122,7 +122,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="hero-image-side">
-            <img src="/images/home-candle.png" alt="Bloom & Aura" />
+            <img src="/images/home-candle.png" alt="Bloom and Aura" />
           </div>
         </div>
       </section>
@@ -162,7 +162,7 @@ const HomePage = () => {
   );
 };
 
-// ===== PRODUCT CARD - NO BADGES =====
+// ===== PRODUCT CARD =====
 const ProductCard = ({ product, onOrder }) => {
   const navigate = useNavigate();
 
@@ -179,9 +179,9 @@ const ProductCard = ({ product, onOrder }) => {
           <span className="rating-count">({product.reviews})</span>
         </div>
         <div className="product-price-row">
-          <span className="price-current">₹{product.price}</span>
+          <span className="price-current">Rs.{product.price}</span>
           {product.originalPrice > product.price && (
-            <span className="price-original">₹{product.originalPrice}</span>
+            <span className="price-original">Rs.{product.originalPrice}</span>
           )}
           {product.discount > 0 && <span className="price-discount">-{product.discount}%</span>}
         </div>
@@ -245,8 +245,8 @@ const ProductDetailPage = ({ onOrder }) => {
             <span>({product.reviews} reviews)</span>
           </div>
           <div className="detail-price-row">
-            <span className="detail-price">₹{product.price}</span>
-            {product.originalPrice > product.price && <span className="detail-original">₹{product.originalPrice}</span>}
+            <span className="detail-price">Rs.{product.price}</span>
+            {product.originalPrice > product.price && <span className="detail-original">Rs.{product.originalPrice}</span>}
             {product.discount > 0 && <span className="detail-discount">-{product.discount}% OFF</span>}
           </div>
           <p className="detail-description">{product.description}</p>
@@ -257,7 +257,7 @@ const ProductDetailPage = ({ onOrder }) => {
             <div className="detail-feature"><div className="detail-feature-icon"><Gift size={18} /></div><span>Gift Ready</span></div>
           </div>
           <button className="btn btn-primary btn-large" onClick={() => onOrder(product)}>
-            <ShoppingCart size={20} /> Order Now - ₹{product.price}
+            <ShoppingCart size={20} /> Order Now - Rs.{product.price}
           </button>
         </div>
       </div>
@@ -331,13 +331,12 @@ const OrderFormPage = ({ product, onSubmitOrder }) => {
       <div className="checkout-container">
         <h2 className="checkout-title">Place Your Order</h2>
 
-        {/* Product Summary */}
         <div className="checkout-form" style={{ marginBottom: '24px', padding: '24px', display: 'flex', gap: '20px', alignItems: 'center' }}>
           <img src={product.image} alt={product.name} style={{ width: '100px', height: '100px', borderRadius: '12px', objectFit: 'cover' }} onError={(e) => { e.target.src = '/logo.png'; }} />
           <div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', color: 'var(--brown)' }}>{product.name}</h3>
             <p style={{ color: 'var(--gray-500)' }}>{product.fragrance}</p>
-            <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--brown)' }}>₹{product.price}</p>
+            <p style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--brown)' }}>Rs.{product.price}</p>
           </div>
         </div>
 
@@ -351,7 +350,7 @@ const OrderFormPage = ({ product, onSubmitOrder }) => {
                 <span className="qty-value">{formData.quantity}</span>
                 <button type="button" className="qty-btn" onClick={() => setFormData(prev => ({ ...prev, quantity: prev.quantity + 1 }))}><Plus size={16} /></button>
               </div>
-              <span style={{ fontWeight: 700, color: 'var(--brown)', marginLeft: '20px' }}>Total: ₹{product.price * formData.quantity}</span>
+              <span style={{ fontWeight: 700, color: 'var(--brown)', marginLeft: '20px' }}>Total: Rs.{product.price * formData.quantity}</span>
             </div>
           </div>
 
@@ -360,17 +359,34 @@ const OrderFormPage = ({ product, onSubmitOrder }) => {
             <div className="form-grid">
               <div className="form-group full-width">
                 <label className="form-label">Full Name <span>*</span></label>
-                <input className={`form-input ${errors.fullName ? 'error' : ''}`} value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} placeholder="Enter your full name" />
+                <input
+                  className={`form-input ${errors.fullName ? 'error' : ''}`}
+                  value={formData.fullName}
+                  onChange={e => setFormData({...formData, fullName: e.target.value})}
+                  placeholder="Enter your full name"
+                />
                 {errors.fullName && <span className="error-text show">{errors.fullName}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Email <span>*</span></label>
-                <input className={`form-input ${errors.email ? 'error' : ''}`} type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="your@email.com" />
+                <input
+                  className={`form-input ${errors.email ? 'error' : ''}`}
+                  type="email"
+                  value={formData.email}
+                  onChange={e => setFormData({...formData, email: e.target.value})}
+                  placeholder="your@email.com"
+                />
                 {errors.email && <span className="error-text show">{errors.email}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Phone Number <span>*</span></label>
-                <input className={`form-input ${errors.phone ? 'error' : ''}`} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0,10)})} placeholder="9876543210" maxLength={10} />
+                <input
+                  className={`form-input ${errors.phone ? 'error' : ''}`}
+                  value={formData.phone}
+                  onChange={e => setFormData({...formData, phone: e.target.value.replace(/\D/g, '').slice(0,10)})}
+                  placeholder="9876543210"
+                  maxLength={10}
+                />
                 {errors.phone && <span className="error-text show">{errors.phone}</span>}
               </div>
             </div>
@@ -381,27 +397,59 @@ const OrderFormPage = ({ product, onSubmitOrder }) => {
             <div className="form-grid">
               <div className="form-group full-width">
                 <label className="form-label">Complete Address <span>*</span></label>
-                <textarea className={`form-input ${errors.address ? 'error' : ''}`} rows="2" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} placeholder="House no, Street, Area, Landmark..." style={{ resize: 'vertical' }} />
+                <textarea
+                  className={`form-input ${errors.address ? 'error' : ''}`}
+                  rows="2"
+                  value={formData.address}
+                  onChange={e => setFormData({...formData, address: e.target.value})}
+                  placeholder="House no, Street, Area, Landmark..."
+                  style={{ resize: 'vertical' }}
+                />
                 {errors.address && <span className="error-text show">{errors.address}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">Pincode <span>*</span></label>
-                <input className={`form-input ${errors.pincode ? 'error' : ''}`} value={formData.pincode} onChange={e => handlePincode(e.target.value)} placeholder="400001" maxLength={6} />
+                <input
+                  className={`form-input ${errors.pincode ? 'error' : ''}`}
+                  value={formData.pincode}
+                  onChange={e => handlePincode(e.target.value)}
+                  placeholder="400001"
+                  maxLength={6}
+                />
                 {errors.pincode && <span className="error-text show">{errors.pincode}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">City <span>*</span></label>
-                <input className={`form-input ${errors.city ? 'error' : ''}`} value={formData.city} onChange={e => setFormData({...formData, city: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
+                <input
+                  className={`form-input ${errors.city ? 'error' : ''}`}
+                  value={formData.city}
+                  onChange={e => setFormData({...formData, city: e.target.value})}
+                  placeholder="Auto-filled"
+                  readOnly={!!PINCODE_DATA[formData.pincode]}
+                />
                 {errors.city && <span className="error-text show">{errors.city}</span>}
               </div>
               <div className="form-group">
                 <label className="form-label">State <span>*</span></label>
-                <input className={`form-input ${errors.state ? 'error' : ''}`} value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} placeholder="Auto-filled" readOnly={!!PINCODE_DATA[formData.pincode]} />
+                <input
+                  className={`form-input ${errors.state ? 'error' : ''}`}
+                  value={formData.state}
+                  onChange={e => setFormData({...formData, state: e.target.value})}
+                  placeholder="Auto-filled"
+                  readOnly={!!PINCODE_DATA[formData.pincode]}
+                />
                 {errors.state && <span className="error-text show">{errors.state}</span>}
               </div>
               <div className="form-group full-width">
                 <label className="form-label">Additional Notes</label>
-                <textarea className="form-input" rows="2" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} placeholder="Any delivery instructions..." style={{ resize: 'vertical' }} />
+                <textarea
+                  className="form-input"
+                  rows="2"
+                  value={formData.notes}
+                  onChange={e => setFormData({...formData, notes: e.target.value})}
+                  placeholder="Any delivery instructions..."
+                  style={{ resize: 'vertical' }}
+                />
               </div>
             </div>
           </div>
@@ -429,7 +477,7 @@ const AboutPage = () => (
         </div>
         <div className="about-content">
           <h2>Passion in Every Pour</h2>
-          <p>Bloom & Aura was born from a simple belief: everyone deserves a sanctuary. Our founder started making candles in a small kitchen, experimenting with natural soy wax and essential oils until the perfect blend was found.</p>
+          <p>Bloom and Aura was born from a simple belief: everyone deserves a sanctuary. Our founder started making candles in a small kitchen, experimenting with natural soy wax and essential oils until the perfect blend was found.</p>
           <p>Today, we continue that tradition of handcrafted excellence. Each candle is poured by hand, using only the finest natural ingredients sourced from sustainable farms across India.</p>
           <p>From the first flicker to the last glow, we promise an experience that soothes the soul and elevates your space.</p>
         </div>
@@ -476,7 +524,7 @@ const HistoryPage = () => {
       <div className="history-container">
         <h2 className="history-title">Order History</h2>
         <div className="history-empty">
-          <div style={{ fontSize: '4rem', marginBottom: '16px' }}>📦</div>
+          <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🕯️</div>
           <h3>No orders yet</h3>
           <p>Your completed orders will appear here</p>
           <button className="btn btn-primary" onClick={() => window.location.href = '/products'} style={{ marginTop: '20px' }}>
@@ -503,10 +551,10 @@ const HistoryPage = () => {
             <div className="history-items">
               <div className="history-item">
                 <span>{order.product?.name} x {order.quantity}</span>
-                <span>₹{order.total}</span>
+                <span>Rs.{order.total}</span>
               </div>
             </div>
-            <div className="history-total"><span>Total</span><span>₹{order.total}</span></div>
+            <div className="history-total"><span>Total</span><span>Rs.{order.total}</span></div>
           </div>
         ))}
       </div>
@@ -517,7 +565,6 @@ const HistoryPage = () => {
 // ===== MAIN APP =====
 const App = () => {
   const [orderProduct, setOrderProduct] = useState(null);
-
   const navigate = useNavigate();
 
   const handleOrder = useCallback((product) => {
@@ -534,7 +581,6 @@ const App = () => {
     });
     localStorage.setItem('bloomie-orders', JSON.stringify(orders));
 
-    // Send email via API
     try {
       await fetch('/api/order', {
         method: 'POST',
