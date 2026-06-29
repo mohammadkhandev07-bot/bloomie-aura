@@ -38,30 +38,43 @@ change karne ki zaroorat nahi.
   add kar sakte ho, just `product.html` me ek aur `<article
   class="product-card">` copy-paste kar dena)
 
-## 📧 Order Email Setup (ZAROORI — isse karna hai)
+## 📧 Order Backend Setup (ZAROORI — isse karna hai)
 
-`script.js` file kholo aur ye line dhoondo:
+Ab website me **real backend** lag gaya hai — jab customer "Order Now"
+dabayega, order **automatically** owner ki email inbox me chala jayega.
+Customer ko kuch alag se karne ki zaroorat nahi (pehle wale mailto
+version me customer ko khud "Send" dabana padta tha, ab nahi).
 
-```js
-const SHOP_OWNER_EMAIL = "youremail@example.com"; // <-- PUT YOUR EMAIL HERE
-```
+Iske liye **Formspree** (free service) use kiya hai. Setup karne ke
+sirf 2 minute lagenge:
 
-Yahan apni (ya banday ki) asli email daal do, jaise:
+1. [formspree.io](https://formspree.io) par jaakar free account
+   banao.
+2. "New Form" banao aur wahi email address daalo jis par order aane
+   chahiye (jaise `bloomeiandaura@gmail.com`).
+3. Formspree tumhe ek endpoint URL dega, jaisa dikhega:
+   ```
+   https://formspree.io/f/abc12345
+   ```
+4. `script.js` file kholo aur ye line dhoondo:
+   ```js
+   const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT";
+   ```
+   `YOUR_FORMSPREE_ENDPOINT` wali jagah apna asli Formspree URL paste
+   kar do.
+5. Formspree us email par ek **confirmation email** bhejega — usme
+   diya gaya confirm link/button dabana **zaroori** hai, varna orders
+   deliver nahi honge.
 
-```js
-const SHOP_OWNER_EMAIL = "bloomeiandaura@gmail.com";
-```
+Bas itna karne ke baad website ka backend fully ready hai — koi
+server, hosting ya coding ki zaroorat nahi padegi. Free plan me
+**50 submissions/month** milte hain, jo ek nayi small business ke
+liye shuruaat me kaafi hai. Zyada orders aane lagein to Formspree ka
+paid plan le sakte ho.
 
-Bas itna karne se jab koi customer "Order Now" dabayega, uska email
-app khulega us email address ke saath order ki saari detail already
-bhari hui — customer ko sirf **Send** dabana hoga. Koi backend/server
-ki zaroorat nahi padi.
-
-> Agar future me chaho ke email automatically bina customer ke "Send"
-> dabaye chala jaaye, uske liye EmailJS ya Formspree jaisi free
-> service use karke `script.js` ke `sendOrderByEmail()` function ko
-> update karna padega. Abhi ke liye simple `mailto:` tareeka use kiya
-> hai jo bina kisi backend ke kaam karta hai.
+> Agar customer ka internet slow ho ya order na ja paaye, to popup me
+> ek error message dikhega aur wo dobara try kar sakega — order tab
+> tak "lost" nahi hota.
 
 ## 🚀 GitHub par daalna (deploy karna)
 
