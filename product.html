@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop Candles — Bloomei &amp; Aura</title>
+<meta name="description" content="Shop handpoured soy wax candles from Bloomei & Aura — Vanilla, Lavender, Rose Garden & more." />
+<link rel="icon" type="image/png" href="images/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="petal-field" aria-hidden="true">
+  <span class="petal" style="left:10%; animation-delay:2s;">❀</span>
+  <span class="petal" style="left:35%; animation-delay:5s;">❁</span>
+  <span class="petal" style="left:65%; animation-delay:1s;">❀</span>
+  <span class="petal" style="left:85%; animation-delay:7s;">❁</span>
+</div>
+
+<header class="navbar">
+  <a href="index.html" class="brand-mark">
+    <img src="images/logo.png" alt="Bloomei & Aura logo" />
+    <span class="brand-text">Bloomei <span>&amp;</span> Aura</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="product.html" class="active">Products</a>
+  </nav>
+  <button class="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ===================== PRODUCT HERO ===================== -->
+<section class="section product-hero">
+  <p class="eyebrow">The Collection</p>
+  <h1>Find your favourite scent</h1>
+  <p class="lede center-lede">Every candle below is handpoured in small batches using premium soy wax. Pick one, add it to your cart, and we'll take it from there.</p>
+</section>
+
+<!-- ===================== PRODUCT GRID ===================== -->
+<section class="section section-tight product-grid-section">
+  <div class="product-grid">
+
+    <article class="product-card">
+      <div class="product-img"><img src="images/product-vanilla.png" alt="Vanilla scented soy candle" /></div>
+      <h3>Vanilla Bloom</h3>
+      <p class="product-desc">Warm, creamy vanilla with a soft floral finish — cozy and comforting.</p>
+      <div class="product-bottom">
+        <span class="product-price">₹399</span>
+        <button class="btn btn-primary add-to-cart-btn" data-product="Vanilla Bloom Candle">Add to Cart</button>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <div class="product-img"><img src="images/product-lavender.png" alt="Lavender scented soy candle" /></div>
+      <h3>Lavender Aura</h3>
+      <p class="product-desc">Calming lavender fields in a jar — perfect for winding down at night.</p>
+      <div class="product-bottom">
+        <span class="product-price">₹399</span>
+        <button class="btn btn-primary add-to-cart-btn" data-product="Lavender Aura Candle">Add to Cart</button>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <div class="product-img"><img src="images/product-rose.png" alt="Rose garden scented soy candle" /></div>
+      <h3>Rose Garden</h3>
+      <p class="product-desc">A soft, romantic rose scent with gentle green undertones.</p>
+      <div class="product-bottom">
+        <span class="product-price">₹449</span>
+        <button class="btn btn-primary add-to-cart-btn" data-product="Rose Garden Candle">Add to Cart</button>
+      </div>
+    </article>
+
+    <article class="product-card">
+      <div class="product-img"><img src="images/product-citrus.png" alt="Citrus mint scented soy candle" /></div>
+      <h3>Citrus Mint Fresh</h3>
+      <p class="product-desc">A refreshing citrus-mint blend that wakes up any room instantly.</p>
+      <div class="product-bottom">
+        <span class="product-price">₹399</span>
+        <button class="btn btn-primary add-to-cart-btn" data-product="Citrus Mint Fresh Candle">Add to Cart</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <a href="index.html" class="brand-mark">
+    <img src="images/logo.png" alt="Bloomei & Aura logo" />
+    <span class="brand-text">Bloomei <span>&amp;</span> Aura</span>
+  </a>
+  <p>Blooming beauty, lasting aura.</p>
+  <span class="thanks">Thank You For Supporting Small Business ♥</span>
+</footer>
+
+<!-- ===================== ORDER MODAL (Add to Cart popup) ===================== -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box">
+    <button class="modal-close" id="orderModalClose" aria-label="Close">✕</button>
+
+    <div id="orderFormView">
+      <h3>Complete Your Order</h3>
+      <p class="modal-item-name" id="modalProductLabel">Candle Name</p>
+
+      <form id="orderForm">
+        <input type="hidden" id="orderProductName" value="" />
+
+        <div class="form-group">
+          <label for="orderName">Full Name</label>
+          <input type="text" id="orderName" placeholder="Your full name" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderPhone">Phone Number</label>
+            <input type="tel" id="orderPhone" placeholder="10-digit mobile number" required />
+          </div>
+          <div class="form-group">
+            <label for="orderQty">Quantity</label>
+            <select id="orderQty">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orderEmail">Email Address</label>
+          <input type="email" id="orderEmail" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="orderAddress">Delivery Address</label>
+          <textarea id="orderAddress" placeholder="House no., street, locality" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderCity">City</label>
+            <input type="text" id="orderCity" placeholder="City" required />
+          </div>
+          <div class="form-group">
+            <label for="orderPincode">Pincode</label>
+            <input type="text" id="orderPincode" placeholder="e.g. 452001" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orderNotes">Order Notes (optional)</label>
+          <textarea id="orderNotes" placeholder="Any special instructions..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary modal-submit">Order Now</button>
+        <p class="modal-note">Clicking "Order Now" will open your email app with the order details filled in — just hit send to confirm.</p>
+      </form>
+    </div>
+
+    <div id="orderSuccessView" style="display:none;">
+      <div class="modal-success">
+        <div class="success-icon">🌸</div>
+        <h3>Almost done!</h3>
+        <p class="lede">Your email app should now be open with your order details. Please hit <strong>Send</strong> to confirm your order with us.</p>
+        <button class="btn btn-outline" id="orderDoneBtn" style="margin-top:18px;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Close modal from the success view's "Close" button.
+  document.getElementById("orderDoneBtn").addEventListener("click", () => {
+    document.getElementById("orderModal").classList.remove("open");
+    document.body.style.overflow = "";
+  });
+</script>
+</body>
+</html>
