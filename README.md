@@ -9,8 +9,9 @@ bloomei-aura/
 ├── index.html       → Home page
 ├── about.html       → About page
 ├── product.html      → Product/Shop page (candles + order form)
+├── terms.html         → Terms & Conditions page (linked in footer)
 ├── style.css         → Saari styling ek hi file me
-├── script.js         → Cart popup + order email logic
+├── script.js         → Cart popup + order email logic + terms validation
 ├── images/           → Sari images yahan rakhni hain
 │   ├── logo.png              (logo / favicon)
 │   ├── hero-candle.png       (home page wali badi candle image)
@@ -98,7 +99,34 @@ paid plan le sakte ho.
 - **Products (`product.html`)** — Saari candles, har candle ke "Add
   to Cart" button par click karne se popup khulta hai jisme customer
   apna naam, phone, email, address bharta hai aur "Order Now" dabate
-  hi email ban jata hai
+  hi order automatically owner ki email me chala jata hai
+- **Terms & Conditions (`terms.html`)** — Footer me link diya hai
+  (jaisa professional websites me hota hai). Order policy, cancellation
+  policy, aur customer ki responsibility clearly likhi hai.
+
+## 🛡️ Terms & Conditions Protection (Order Cancellation se bachne ke liye)
+
+Jaisa aapne bola tha — agar koi order karke baad me product lene se
+mana kar de, us situation ke liye safety lagayi hai:
+
+- Order popup me ab ek checkbox hai: **"I have read and agree to the
+  Terms & Conditions..."**
+- Jab tak customer is checkbox ko tick nahi karega, "Order Now" dabane
+  par **red error message** dikhega aur order **submit nahi hoga**.
+- Checkbox tick karne ka matlab hai customer ne confirm kiya ki order
+  ek **binding commitment** hai — `terms.html` page me ye clearly
+  likha hai ki order place karne ke baad bina valid reason ke refuse
+  karna "breach of agreement" maana jayega, aur isse hone wale
+  nuksan (material, packaging, shipping cost) ke liye customer
+  responsible ho sakta hai.
+- Har order ke saath "Terms Accepted: Yes" wali line bhi owner ki
+  email me record ke taur par chali jaati hai — taaki future me proof
+  ke roop me use ho sake agar zaroorat pade.
+
+> ⚠️ Dhyan rahe: ye terms ek **starting point** hain, kisi wakai legal
+> case ke liye kisi local lawyer se ek baar terms ko confirm kar lena
+> zyada sahi rahega, kyunki consumer protection laws state/country ke
+> hisaab se alag hote hain.
 
 ## 🎨 Theme
 
