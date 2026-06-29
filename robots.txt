@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bloomie-aura.vercel.app/sitemap.xml
