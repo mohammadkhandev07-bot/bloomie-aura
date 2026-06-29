@@ -18,7 +18,12 @@ bloomei-aura/
 │   ├── product-vanilla.png
 │   ├── product-lavender.png
 │   ├── product-rose.png
-│   └── product-citrus.png
+│   ├── product-citrus.png
+│   ├── product-honey.png
+│   ├── product-cinnamon.png
+│   ├── product-jasmine.png
+│   ├── product-ocean.png
+│   └── product-sandalwood.png
 └── README.md
 ```
 
