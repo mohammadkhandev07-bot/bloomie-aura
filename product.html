@@ -158,17 +158,21 @@
         </div>
 
         <button type="submit" class="btn btn-primary modal-submit">Order Now</button>
-        <p class="modal-note">Clicking "Order Now" will open your email app with the order details filled in — just hit send to confirm.</p>
+        <p class="modal-note">Clicking "Order Now" will send your order details directly to us — no extra steps needed.</p>
       </form>
     </div>
 
     <div id="orderSuccessView" style="display:none;">
       <div class="modal-success">
         <div class="success-icon">🌸</div>
-        <h3>Almost done!</h3>
-        <p class="lede">Your email app should now be open with your order details. Please hit <strong>Send</strong> to confirm your order with us.</p>
+        <h3>Order Placed!</h3>
+        <p class="lede">Thank you — your order has been sent to us. We'll reach out to confirm delivery details shortly.</p>
         <button class="btn btn-outline" id="orderDoneBtn" style="margin-top:18px;">Close</button>
       </div>
+    </div>
+
+    <div id="orderErrorView" class="modal-error" style="display:none;">
+      Something went wrong while sending your order. Please check your internet connection and try again, or contact us directly.
     </div>
   </div>
 </div>
