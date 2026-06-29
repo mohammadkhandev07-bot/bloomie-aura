@@ -660,7 +660,48 @@ textarea:focus-visible {
 }
 
 @media (max-width: 560px) {
-  .product-grid { grid-template-columns: 1fr; }
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .product-card {
+    padding: 10px;
+    border-radius: var(--radius-sm);
+  }
+  .product-img {
+    margin-bottom: 8px;
+    border-radius: 8px;
+  }
+  .product-card h3 {
+    font-size: 0.88rem;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .product-desc {
+    font-size: 0.72rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    /* clamp to 2 lines so cards stay uniform, like Flipkart/Amazon listings */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .product-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .product-price {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+  .product-bottom .btn {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.74rem;
+    border-radius: 8px;
+  }
 }
 
 /* ============================================
@@ -1154,5 +1195,220 @@ textarea:focus-visible {
   }
   .modal-box {
     padding: 26px 22px;
+  }
+}
+
+/* ============================================
+   SITE-WIDE MOBILE SCALE-DOWN
+   Makes text, images, icons, and spacing smaller
+   and tighter on phones — like a typical shopping
+   app (Flipkart/Amazon-style compact layout).
+   ============================================ */
+@media (max-width: 600px) {
+
+  /* ---- General spacing & type scale ---- */
+  .section {
+    padding: 44px 5%;
+  }
+  .section-tight {
+    padding: 34px 5%;
+  }
+
+  h1 { font-size: 1.7rem; line-height: 1.25; }
+  h2 { font-size: 1.4rem; }
+  h3 { font-size: 1.05rem; }
+
+  .lede {
+    font-size: 0.88rem;
+    max-width: 100%;
+  }
+
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+  }
+
+  .btn {
+    padding: 11px 22px;
+    font-size: 0.82rem;
+  }
+
+  /* ---- Navbar: smaller logo + wordmark ---- */
+  .navbar {
+    padding: 10px 4%;
+  }
+  .brand-mark img {
+    width: 32px;
+    height: 32px;
+  }
+  .brand-mark .brand-text {
+    font-size: 1rem;
+  }
+  .nav-toggle span {
+    width: 20px;
+    height: 2px;
+  }
+
+  /* ---- Hero (home page) ---- */
+  .hero {
+    padding-top: 24px;
+  }
+  .hero-inner {
+    gap: 24px;
+  }
+  .hero-image img {
+    max-width: 230px;
+    border-radius: var(--radius-md);
+  }
+  .hero-glow {
+    width: 220px;
+    height: 220px;
+  }
+  .hero-copy .lede {
+    margin-bottom: 18px;
+  }
+  .hero-actions {
+    gap: 10px;
+  }
+  .hero-actions .btn {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 14px;
+    font-size: 0.78rem;
+  }
+
+  /* ---- Section heads ---- */
+  .section-head {
+    margin-bottom: 26px;
+  }
+
+  /* ---- Feature / value cards ---- */
+  .card-grid {
+    gap: 12px;
+  }
+  .feature-card {
+    padding: 14px;
+    gap: 10px;
+    border-radius: var(--radius-sm);
+  }
+  .feature-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+  .feature-card h3 {
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+  }
+  .feature-card p {
+    font-size: 0.76rem;
+  }
+
+  .value-pill {
+    padding: 8px 14px;
+    font-size: 0.74rem;
+  }
+  .values-inner {
+    gap: 8px;
+  }
+
+  .cta-band {
+    padding: 40px 5%;
+  }
+  .cta-inner .lede {
+    margin: 8px auto 18px;
+    font-size: 0.84rem;
+  }
+
+  /* ---- About page ---- */
+  .about-hero {
+    padding-top: 24px;
+  }
+  .story-grid {
+    gap: 22px;
+  }
+  .story-text p {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+  }
+  .story-image img {
+    border-radius: var(--radius-md);
+  }
+
+  /* ---- Product page hero ---- */
+  .product-hero {
+    padding-top: 24px;
+  }
+
+  /* ---- Modal / order form ---- */
+  .modal-box h3 {
+    font-size: 1.15rem;
+  }
+  .modal-item-name {
+    font-size: 0.82rem;
+  }
+  .form-group label {
+    font-size: 0.76rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 9px 11px;
+    font-size: 0.86rem;
+  }
+  .terms-agree label {
+    font-size: 0.74rem;
+  }
+  .modal-note {
+    font-size: 0.7rem;
+  }
+
+  /* ---- Footer ---- */
+  .footer {
+    padding: 36px 5% 0;
+  }
+  .footer-brand .brand-mark img {
+    width: 36px;
+    height: 36px;
+  }
+  .footer-brand p {
+    font-size: 0.78rem;
+  }
+  .footer-col h4 {
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+  }
+  .footer-col a {
+    font-size: 0.78rem;
+  }
+  .footer .thanks {
+    font-size: 0.76rem;
+    padding: 8px 18px;
+  }
+  .footer-bottom .copyright,
+  .footer-legal a {
+    font-size: 0.72rem;
+  }
+
+  /* ---- Terms page ---- */
+  .terms-body {
+    padding: 22px 16px;
+  }
+  .terms-body h2 {
+    font-size: 1.05rem;
+    margin-top: 24px;
+  }
+  .terms-body h2 .num {
+    width: 24px;
+    height: 24px;
+    font-size: 0.74rem;
+  }
+  .terms-body p,
+  .terms-body li {
+    font-size: 0.82rem;
+  }
+  .terms-highlight {
+    padding: 14px 16px;
   }
 }
