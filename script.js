@@ -181,4 +181,121 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
   }
+
+  /* ----------------------------------------------------------------
+     Product Search (fuzzy — never returns a fully empty result)
+     ----------------------------------------------------------------
+     Matches against each card's name, description, and hidden
+     data-search keywords. If nothing matches well, it falls back to
+     showing the closest-scoring candles instead of an empty page.
+  -----------------------------------------------------------------*/
+  const searchInput = document.getElementById("productSearchInput");
+  const searchClearBtn = document.getElementById("searchClearBtn");
+  const searchResultNote = document.getElementById("searchResultNote");
+  const noResultsMsg = document.getElementById("noResultsMsg");
+  const productCards = Array.from(document.querySelectorAll(".product-card"));
+
+  if (searchInput && productCards.length) {
+    // Pre-build a searchable text blob for every card once.
+    const cardData = productCards.map((card) => {
+      const name = card.querySelector("h3")?.textContent || "";
+      const desc = card.querySelector(".product-desc")?.textContent || "";
+      const keywords = card.getAttribute("data-search") || "";
+      return {
+        card,
+        name,
+        haystack: `${name} ${desc} ${keywords}`.toLowerCase(),
+      };
+    });
+
+    // Simple, dependency-free fuzzy score:
+    // +heavy weight for direct substring matches (best signal),
+    // +partial credit for shared characters/word-fragments (typo tolerance).
+    function fuzzyScore(query, text) {
+      query = query.trim().toLowerCase();
+      if (!query) return 1; // empty query => everything matches equally
+      if (text.includes(query)) return 100 + query.length; // strong direct hit
+
+      const words = text.split(/\s+/);
+      let best = 0;
+      for (const word of words) {
+        if (!word) continue;
+        if (word.startsWith(query) || query.startsWith(word)) {
+          best = Math.max(best, 60);
+          continue;
+        }
+        // Character-overlap closeness (handles typos like "lavendr")
+        let shared = 0;
+        const wChars = word.split("");
+        for (const ch of query) {
+          const idx = wChars.indexOf(ch);
+          if (idx !== -1) {
+            shared++;
+            wChars.splice(idx, 1);
+          }
+        }
+        const ratio = shared / Math.max(query.length, word.length, 1);
+        best = Math.max(best, ratio * 40);
+      }
+      return best;
+    }
+
+    function runSearch() {
+      const query = searchInput.value;
+      searchClearBtn.style.display = query ? "flex" : "none";
+
+      if (!query.trim()) {
+        productCards.forEach((c) => c.classList.remove("search-hidden"));
+        searchResultNote.textContent = "";
+        noResultsMsg.style.display = "none";
+        return;
+      }
+
+      // Score every product against the query.
+      const scored = cardData.map((d) => ({
+        ...d,
+        score: fuzzyScore(query, d.haystack),
+      }));
+
+      const DIRECT_THRESHOLD = 15; // "genuine" match cutoff
+      const directHits = scored.filter((d) => d.score >= DIRECT_THRESHOLD);
+
+      if (directHits.length > 0) {
+        // Show genuine matches, hide the rest.
+        const directSet = new Set(directHits.map((d) => d.card));
+        cardData.forEach((d) => d.card.classList.toggle("search-hidden", !directSet.has(d.card)));
+        noResultsMsg.style.display = "none";
+        searchResultNote.innerHTML = `Showing <span class="search-highlight">${directHits.length}</span> candle${directHits.length === 1 ? "" : "s"} matching "<span class="search-highlight">${escapeHtml(query)}</span>"`;
+      } else {
+        // No genuine match — never show a blank page. Show the
+        // closest-scoring candles instead (top 3) with a friendly note.
+        const ranked = [...scored].sort((a, b) => b.score - a.score);
+        const closest = ranked.slice(0, 3);
+        const closestSet = new Set(closest.map((d) => d.card));
+        cardData.forEach((d) => d.card.classList.toggle("search-hidden", !closestSet.has(d.card)));
+        noResultsMsg.style.display = "block";
+        searchResultNote.innerHTML = `No exact match for "<span class="search-highlight">${escapeHtml(query)}</span>" — showing our closest scents instead`;
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    let searchDebounce;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(runSearch, 120);
+    });
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        runSearch();
+        searchInput.focus();
+      });
+    }
+  }
 });
