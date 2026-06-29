@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
      That's it — every order placed on the website will now land
      directly in that inbox automatically.
   -----------------------------------------------------------------*/
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT"; // <-- PUT YOUR FORMSPREE URL HERE
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/mqevlpjq";
 
   async function sendOrderToOwner(order) {
     try {
