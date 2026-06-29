@@ -1552,3 +1552,18 @@ textarea:focus-visible {
     font-size: 0.78rem;
   }
 }
+
+/* H1 brand name + tagline split (for SEO — H1 includes brand name) */
+.hero-tagline {
+  display: inline-block;
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--brown-soft);
+  margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+  .hero-tagline {
+    font-size: 0.5em;
+  }
+}
