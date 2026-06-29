@@ -10,6 +10,8 @@ bloomei-aura/
 ├── about.html       → About page
 ├── product.html      → Product/Shop page (candles + order form)
 ├── terms.html         → Terms & Conditions page (linked in footer)
+├── sitemap.xml        → Google ko batata hai website ke pages kya hain
+├── robots.txt         → Google ko crawl karne ki permission + sitemap ka location
 ├── style.css         → Saari styling ek hi file me
 ├── script.js         → Cart popup + order email logic + terms validation
 ├── images/           → Sari images yahan rakhni hain
@@ -27,6 +29,16 @@ bloomei-aura/
 │   └── product-sandalwood.png
 └── README.md
 ```
+
+**`sitemap.xml`** aur **`robots.txt`** dono files root folder me hi
+rehni hai — `images` folder ke andar nahi, aur kisi sub-folder me
+nahi. Jab GitHub Pages ya Vercel pe deploy karoge, ye dono files
+seedha root URL pe accessible honi chahiye, jaise:
+- `https://bloomie-aura.vercel.app/sitemap.xml`
+- `https://bloomie-aura.vercel.app/robots.txt`
+
+(Google aur browsers hamesha is exact location pe hi inhe dhoondte
+hain, isliye inka root me hona zaroori hai.)
 
 ## 🖼️ Images kaise daalein
 
@@ -90,6 +102,30 @@ paid plan le sakte ho.
    (branch: `main`, folder: `/root`)
 4. Kuch minute baad website live ho jayegi ek link par jaise:
    `https://yourusername.github.io/bloomei-aura/`
+
+## 🔍 SEO &amp; Google Search Console Setup
+
+Website ke saath ab **`sitemap.xml`** aur **`robots.txt`** files bhi
+hain — ye Google ko batati hain ki website ke kaunse pages exist
+karte hain, taaki search results me jaldi aaye.
+
+**Sitemap Google Search Console me submit karne ka tareeka:**
+
+1. [Google Search Console](https://search.google.com/search-console)
+   me jaakar apni property (`bloomie-aura.vercel.app`) kholo.
+2. Left sidebar me **"Indexing" → "Sitemaps"** par click karo.
+3. "Add a new sitemap" wale box me sirf likho: `sitemap.xml`
+4. Submit dabao — Google ab periodically apni site crawl karega aur
+   naye/updated pages ko search results me dikhana shuru karega.
+
+> Note: Google ko crawl + index karne me kabhi kabhi **kuch din se
+> kuch hafte** lag sakte hain — ye normal hai, instant nahi hota.
+
+**Agar domain badal jaye:** Agar future me website ka domain change
+ho (jaise custom domain le lo), to `sitemap.xml`, `robots.txt`, aur
+har HTML file ke `<link rel="canonical">` aur Open Graph URLs me
+purana domain (`bloomie-aura.vercel.app`) naye domain se replace
+karna hoga.
 
 ## ✅ Pages
 
