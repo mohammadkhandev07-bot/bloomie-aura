@@ -53,9 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeModal();
   });
 
+  const submitBtn = form ? form.querySelector(".modal-submit") : null;
+  const errorView = document.getElementById("orderErrorView");
+
   /* ---------- Order submission ---------- */
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const order = {
@@ -70,43 +73,80 @@ document.addEventListener("DOMContentLoaded", () => {
         notes: document.getElementById("orderNotes").value.trim(),
       };
 
-      sendOrderByEmail(order);
+      // Show a "sending..." state on the button.
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending Order...";
+      }
+      if (errorView) errorView.style.display = "none";
 
-      // Show success state inside the same modal.
-      if (formView) formView.style.display = "none";
-      if (successView) successView.style.display = "block";
+      const sent = await sendOrderToOwner(order);
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Order Now";
+      }
+
+      if (sent) {
+        // Order reached the owner's inbox automatically — show success.
+        if (formView) formView.style.display = "none";
+        if (successView) successView.style.display = "block";
+      } else {
+        // Something went wrong (no internet, Formspree not set up yet, etc.)
+        if (errorView) errorView.style.display = "block";
+      }
     });
   }
 
   /* ----------------------------------------------------------------
-     sendOrderByEmail(order)
+     sendOrderToOwner(order)
      ----------------------------------------------------------------
-     >>> SHOP OWNER: PUT YOUR RECEIVING EMAIL ADDRESS HERE <<<
-     Replace the text inside the quotes below with the email address
-     where you want every order to be sent.
+     >>> SHOP OWNER / DEVELOPER: SET UP YOUR FORMSPREE ENDPOINT HERE <<<
+
+     This sends the order straight to the owner's email inbox
+     automatically — the customer does NOT need to do anything else
+     after clicking "Order Now". No server of your own required.
+
+     Setup (one-time, takes 2 minutes):
+       1. Go to https://formspree.io and sign up (free).
+       2. Create a new form and enter the email address where you
+          want to receive orders (e.g. bloomeiandaura@gmail.com).
+       3. Formspree will give you an endpoint URL that looks like:
+            https://formspree.io/f/abc12345
+       4. Paste that URL below, replacing "YOUR_FORMSPREE_ENDPOINT".
+       5. Formspree will also send a one-time confirmation email to
+          that inbox — open it and click "Confirm" or orders won't
+          be delivered yet.
+
+     That's it — every order placed on the website will now land
+     directly in that inbox automatically.
   -----------------------------------------------------------------*/
-  const SHOP_OWNER_EMAIL = "youremail@example.com"; // <-- PUT YOUR EMAIL HERE
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT"; // <-- PUT YOUR FORMSPREE URL HERE
 
-  function sendOrderByEmail(order) {
-    const subject = encodeURIComponent(`New Order: ${order.product} (x${order.quantity})`);
-    const body = encodeURIComponent(
-      `New order received from the Bloomei & Aura website:\n\n` +
-      `Product: ${order.product}\n` +
-      `Quantity: ${order.quantity}\n\n` +
-      `Customer Name: ${order.name}\n` +
-      `Phone Number: ${order.phone}\n` +
-      `Email: ${order.email}\n\n` +
-      `Delivery Address: ${order.address}\n` +
-      `City: ${order.city}\n` +
-      `Pincode: ${order.pincode}\n\n` +
-      `Order Notes: ${order.notes || "None"}\n`
-    );
+  async function sendOrderToOwner(order) {
+    try {
+      const formData = new FormData();
+      formData.append("_subject", `New Order: ${order.product} (x${order.quantity})`);
+      formData.append("_replyto", order.email);
+      formData.append("Product", order.product);
+      formData.append("Quantity", order.quantity);
+      formData.append("Customer Name", order.name);
+      formData.append("Phone Number", order.phone);
+      formData.append("Email", order.email);
+      formData.append("Delivery Address", order.address);
+      formData.append("City", order.city);
+      formData.append("Pincode", order.pincode);
+      formData.append("Order Notes", order.notes || "None");
 
-    // This opens the customer's email app with everything pre-filled,
-    // so they just have to hit "Send" — no backend/server needed.
-    // (For a fully automatic, no-click email send, this line can later
-    // be swapped for a backend service like EmailJS, Formspree, or a
-    // custom server endpoint — ask your developer to wire that in here.)
-    window.location.href = `mailto:${SHOP_OWNER_EMAIL}?subject=${subject}&body=${body}`;
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: formData,
+      });
+      return response.ok;
+    } catch (err) {
+      console.error("Order could not be sent:", err);
+      return false;
+    }
   }
 });
