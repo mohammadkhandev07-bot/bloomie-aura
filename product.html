@@ -39,13 +39,25 @@
   <p class="eyebrow">The Collection</p>
   <h1>Find your favourite scent</h1>
   <p class="lede center-lede">Every candle below is handpoured in small batches using premium soy wax. Pick one, add it to your cart, and we'll take it from there.</p>
+
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="productSearchInput" placeholder="Search candles... e.g. lavender, sweet, calming" autocomplete="off" />
+      <button id="searchClearBtn" class="search-clear" aria-label="Clear search" style="display:none;">✕</button>
+    </div>
+    <p id="searchResultNote" class="search-result-note"></p>
+  </div>
 </section>
 
 <!-- ===================== PRODUCT GRID ===================== -->
 <section class="section section-tight product-grid-section">
   <div class="product-grid">
 
-    <article class="product-card">
+    <article class="product-card" data-search="vanilla bloom warm creamy floral cozy comforting sweet">
       <div class="product-img"><img src="images/product-vanilla.png" alt="Vanilla scented soy candle" /></div>
       <h3>Vanilla Bloom</h3>
       <p class="product-desc">Warm, creamy vanilla with a soft floral finish — cozy and comforting.</p>
@@ -55,7 +67,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="lavender aura calming relaxing sleep night floral purple">
       <div class="product-img"><img src="images/product-lavender.png" alt="Lavender scented soy candle" /></div>
       <h3>Lavender Aura</h3>
       <p class="product-desc">Calming lavender fields in a jar — perfect for winding down at night.</p>
@@ -65,7 +77,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="rose garden romantic floral green pink love">
       <div class="product-img"><img src="images/product-rose.png" alt="Rose garden scented soy candle" /></div>
       <h3>Rose Garden</h3>
       <p class="product-desc">A soft, romantic rose scent with gentle green undertones.</p>
@@ -75,7 +87,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="citrus mint fresh refreshing energizing morning lemon orange">
       <div class="product-img"><img src="images/product-citrus.png" alt="Citrus mint scented soy candle" /></div>
       <h3>Citrus Mint Fresh</h3>
       <p class="product-desc">A refreshing citrus-mint blend that wakes up any room instantly.</p>
@@ -85,7 +97,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="honey golden sweet cozy comforting warm amber">
       <div class="product-img"><img src="images/product-honey.png" alt="Honey scented soy candle in honeycomb-textured jar" /></div>
       <h3>Honey</h3>
       <p class="product-desc">A warm, golden honey scent that feels sweet, cozy, and comforting.</p>
@@ -95,7 +107,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="cinnamon luxury spiced warm winter festive">
       <div class="product-img"><img src="images/product-cinnamon.png" alt="Cinnamon luxury scented soy candle" /></div>
       <h3>Cinnamon</h3>
       <p class="product-desc">Luxury scented soy candle with a warm, spiced cinnamon aroma. 100% natural soy wax.</p>
@@ -105,7 +117,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="jasmine daydream floral dreamy spring soft white">
       <div class="product-img"><img src="images/product-jasmine.png" alt="Jasmine Daydream scented soy candle" /></div>
       <h3>Jasmine Daydream</h3>
       <p class="product-desc">A soft, floral jasmine soy wax candle that feels like a dreamy spring morning.</p>
@@ -115,7 +127,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="ocean luxury fresh breezy sea blue cool">
       <div class="product-img"><img src="images/product-ocean.png" alt="Ocean luxury scented soy candle" /></div>
       <h3>Ocean</h3>
       <p class="product-desc">Luxury scented soy candle with a fresh, breezy ocean scent. 100% natural soy wax.</p>
@@ -125,7 +137,7 @@
       </div>
     </article>
 
-    <article class="product-card">
+    <article class="product-card" data-search="sandalwood earthy aromatherapy stress relief calming wood">
       <div class="product-img"><img src="images/product-sandalwood.png" alt="Sandalwood earthy aromatherapy soy candle" /></div>
       <h3>Sandalwood</h3>
       <p class="product-desc">Earthy aromatherapy &amp; stress relief soy candle, hand poured for a calming evening.</p>
@@ -135,6 +147,12 @@
       </div>
     </article>
 
+  </div>
+
+  <div id="noResultsMsg" class="no-results-msg" style="display:none;">
+    <div class="no-results-icon">🌸</div>
+    <h3>No exact matches, but here's what's close</h3>
+    <p class="lede center-lede">We couldn't find that exact scent, so we've shown our closest matching candles below.</p>
   </div>
 </section>
 
