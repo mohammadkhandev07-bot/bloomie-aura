@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Floral Candles — Bloomei &amp; Aura</title>
+<meta name="description" content="Shop Bloomei & Aura Floral Candles — rose, jasmine and lavender scents handpoured in soy wax, inspired by fresh blooms." />
+<meta name="keywords" content="Bloomei and Aura, Bloomei & Aura, floral candles, flower scented candles, rose candle, jasmine candle, lavender candle" />
+<link rel="canonical" href="https://bloomie-aura.vercel.app/floral-candles.html" />
+<link rel="icon" type="image/png" href="images/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="petal-field" aria-hidden="true">
+  <span class="petal" style="left:10%; animation-delay:2s;">❀</span>
+  <span class="petal" style="left:35%; animation-delay:5s;">❁</span>
+  <span class="petal" style="left:65%; animation-delay:1s;">❀</span>
+  <span class="petal" style="left:85%; animation-delay:7s;">❁</span>
+</div>
+
+<header class="navbar">
+  <a href="index.html" class="brand-mark">
+    <img src="images/logo.png" alt="Bloomei & Aura logo" />
+    <span class="brand-text">Bloomei <span>&amp;</span> Aura</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="product.html" class="active">Products</a>
+  </nav>
+  <button class="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ===================== CATEGORY HERO ===================== -->
+<section class="section product-hero">
+  <a href="product.html" class="category-back">← Back to All Categories</a>
+  <p class="eyebrow">Floral Collection</p>
+  <h1>Floral Candles<br /><span class="hero-tagline">Bring the garden indoors</span></h1>
+  <p class="lede center-lede">Soft, romantic floral fragrances handpoured into candles that bloom with fresh, delicate scent.</p>
+
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="productSearchInput" placeholder="Search floral candles... e.g. rose, jasmine, lavender" autocomplete="off" />
+      <button id="searchClearBtn" class="search-clear" aria-label="Clear search" style="display:none;">✕</button>
+    </div>
+    <p id="searchResultNote" class="search-result-note"></p>
+  </div>
+</section>
+
+<!-- ===================== PRODUCT GRID =====================
+     >>> ADD MORE CANDLES: copy one <article class="product-card">
+     block below and edit the name/desc/price/image. Real photos
+     go in the images/floral-candles/ folder on GitHub — once a photo
+     with the matching filename is added, swap the placeholder
+     .product-img div below for a normal <img> tag (see other
+     pages like index.html for the exact pattern). =====================-->
+<section class="section section-tight product-grid-section">
+  <div class="product-grid">
+
+    <article class="product-card" data-search="floral flower rose jasmine lavender bloom soft romantic sample">
+      <div class="product-img placeholder">
+        <div>
+          <span class="placeholder-tag">Sample — Add Photo</span><br />
+          🌸
+        </div>
+      </div>
+      <h3>Floral Candle — Sample</h3>
+      <p class="product-desc">Placeholder card for this collection — replace the name, description, price and photo once ready.</p>
+      <div class="product-bottom">
+        <span class="product-price">₹399</span>
+        <button class="btn btn-primary add-to-cart-btn" data-product="Floral Candle (Sample)">Add to Cart</button>
+      </div>
+    </article>
+
+  </div>
+
+  <div id="noResultsMsg" class="no-results-msg" style="display:none;">
+    <div class="no-results-icon">🌸</div>
+    <h3>No exact matches, but here's what's close</h3>
+    <p class="lede center-lede">We couldn't find that exact scent, so we've shown our closest matching candles below.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="brand-mark">
+        <img src="images/logo.png" alt="Bloomei & Aura logo" />
+        <span class="brand-text">Bloomei <span>&amp;</span> Aura</span>
+      </a>
+      <p>Handpoured soy wax candles made in small batches — blooming beauty, lasting aura, in every jar.</p>
+      <span class="thanks">Thank You For Supporting Small Business ♥</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="product.html">Shop Candles</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Policies</h4>
+      <ul>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        <li><a href="terms.html#orders">Order Policy</a></li>
+        <li><a href="terms.html#cancellation">Cancellation Policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="copyright">© 2026 Bloomei &amp; Aura. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== ORDER MODAL (Add to Cart popup) ===================== -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box">
+    <button class="modal-close" id="orderModalClose" aria-label="Close">✕</button>
+
+    <div id="orderFormView">
+      <h3>Complete Your Order</h3>
+      <p class="modal-item-name" id="modalProductLabel">Candle Name</p>
+
+      <form id="orderForm">
+        <input type="hidden" id="orderProductName" value="" />
+
+        <div class="form-group">
+          <label for="orderName">Full Name</label>
+          <input type="text" id="orderName" placeholder="Your full name" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderPhone">Phone Number</label>
+            <input type="tel" id="orderPhone" placeholder="10-digit mobile number" required />
+          </div>
+          <div class="form-group">
+            <label for="orderQty">Quantity</label>
+            <select id="orderQty">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orderEmail">Email Address</label>
+          <input type="email" id="orderEmail" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="orderAddress">Delivery Address</label>
+          <textarea id="orderAddress" placeholder="House no., street, locality" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderCity">City</label>
+            <input type="text" id="orderCity" placeholder="City" required />
+          </div>
+          <div class="form-group">
+            <label for="orderPincode">Pincode</label>
+            <input type="text" id="orderPincode" placeholder="e.g. 452001" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orderNotes">Order Notes (optional)</label>
+          <textarea id="orderNotes" placeholder="Any special instructions..."></textarea>
+        </div>
+
+        <div class="terms-agree" id="termsAgreeBox">
+          <input type="checkbox" id="orderTermsCheckbox" />
+          <label for="orderTermsCheckbox">I have read and agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>, and understand that placing this order is a confirmed commitment to purchase.</label>
+        </div>
+        <div class="terms-error-msg" id="termsErrorMsg">⚠️ Please accept the Terms &amp; Conditions before placing your order.</div>
+
+        <button type="submit" class="btn btn-primary modal-submit">Order Now</button>
+        <p class="modal-note">Clicking "Order Now" will send your order details directly to us — no extra steps needed.</p>
+      </form>
+    </div>
+
+    <div id="orderSuccessView" style="display:none;">
+      <div class="modal-success">
+        <div class="success-icon">🌸</div>
+        <h3>Order Placed!</h3>
+        <p class="lede">Thank you — your order has been sent to us. We'll reach out to confirm delivery details shortly.</p>
+        <button class="btn btn-outline" id="orderDoneBtn" style="margin-top:18px;">Close</button>
+      </div>
+    </div>
+
+    <div id="orderErrorView" class="modal-error" style="display:none;">
+      Something went wrong while sending your order. Please check your internet connection and try again, or contact us directly.
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Close modal from the success view's "Close" button.
+  document.getElementById("orderDoneBtn").addEventListener("click", () => {
+    document.getElementById("orderModal").classList.remove("open");
+    document.body.style.overflow = "";
+  });
+</script>
+</body>
+</html>
