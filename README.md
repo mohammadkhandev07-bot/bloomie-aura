@@ -1,32 +1,44 @@
 # Bloomei & Aura — Website
 
-Simple 3-page website for the Bloomei & Aura candle brand.
+Website for the Bloomei & Aura candle brand. `product.html` is now a
+**category hub** — it shows 8 collection cards, and each collection
+has its own dedicated page with its own product grid, search bar,
+and order form.
 
 ## 📁 Project Structure (bahut simple hai)
 
 ```
 bloomei-aura/
-├── index.html       → Home page
-├── about.html       → About page
-├── product.html      → Product/Shop page (candles + order form)
-├── terms.html         → Terms & Conditions page (linked in footer)
-├── sitemap.xml        → Google ko batata hai website ke pages kya hain
-├── robots.txt         → Google ko crawl karne ki permission + sitemap ka location
-├── style.css         → Saari styling ek hi file me
-├── script.js         → Cart popup + order email logic + terms validation
-├── images/           → Sari images yahan rakhni hain
-│   ├── logo.png              (logo / favicon)
-│   ├── hero-candle.png       (home page wali badi candle image)
-│   ├── about-candle.png      (about page image)
-│   ├── product-vanilla.png
-│   ├── product-lavender.png
-│   ├── product-rose.png
-│   ├── product-citrus.png
-│   ├── product-honey.png
-│   ├── product-cinnamon.png
-│   ├── product-jasmine.png
-│   ├── product-ocean.png
-│   └── product-sandalwood.png
+├── index.html               → Home page
+├── about.html                → About page
+├── product.html                → Shop hub — 8 category cards, links to pages below
+├── floral-candles.html          → Floral Candles collection page
+├── bouquet-candles.html         → Bouquet Candles collection page
+├── glass-jar-candles.html       → Glass Jar Candles collection page
+├── floating-candles.html        → Floating Candles collection page
+├── concrete-candles.html        → Concrete Candles collection page
+├── decorative-candles.html      → Decorative Candles collection page
+├── gift-hampers.html            → Gift Hampers collection page
+├── customized-orders.html       → Customized Orders request page
+├── terms.html                → Terms & Conditions page (linked in footer)
+├── sitemap.xml               → Google ko batata hai website ke pages kya hain
+├── robots.txt                → Google ko crawl karne ki permission + sitemap ka location
+├── style.css                 → Saari styling ek hi file me
+├── script.js                 → Cart popup + order email logic + terms validation + search
+├── images/                   → Sari images yahan rakhni hain
+│   ├── logo.png                   (logo / favicon)
+│   ├── hero-candle.png            (home page wali badi candle image)
+│   ├── about-candle.png           (about page image)
+│   ├── product-*.png              (old sample candle photos — still used nowhere on
+│   │                                the shop pages anymore, kept for reference)
+│   ├── floral-candles/            (empty — asli floral candle photos yahan daalo)
+│   ├── bouquet-candles/           (empty — asli bouquet candle photos yahan daalo)
+│   ├── glass-jar-candles/         (empty — asli glass jar candle photos yahan daalo)
+│   ├── floating-candles/          (empty — asli floating candle photos yahan daalo)
+│   ├── concrete-candles/          (empty — asli concrete candle photos yahan daalo)
+│   ├── decorative-candles/        (empty — asli decorative candle photos yahan daalo)
+│   ├── gift-hampers/              (empty — asli hamper photos yahan daalo)
+│   └── customized-orders/         (empty — reference photos yahan daalo, agar chahiye)
 └── README.md
 ```
 
@@ -40,21 +52,48 @@ seedha root URL pe accessible honi chahiye, jaise:
 (Google aur browsers hamesha is exact location pe hi inhe dhoondte
 hain, isliye inka root me hona zaroori hai.)
 
+## 🛍️ Shop pages kaise kaam karte hain
+
+`product.html` par ab candles direct nahi dikhti — sirf 8 collection
+cards dikhte hain (Floral, Bouquet, Glass Jar, Floating, Concrete,
+Decorative, Gift Hampers, Customized Orders). Kisi bhi card pe click
+karne se us collection ki apni alag page khulti hai, jisme:
+- Us collection ki candles ka grid
+- Ek search bar (sirf us collection ke andar search karta hai)
+- "Add to Cart" → order popup (same jaisa pehle tha)
+
+Har collection page abhi ek **sample placeholder card** ke saath aata
+hai (label: "Sample — Add Photo"), taaki structure dikh sake. Real
+candles add karne ke liye us page me `<article class="product-card">`
+wala block copy-paste kar do aur naam/description/price/image badal
+do — jaisa pehle `product.html` me hota tha.
+
 ## 🖼️ Images kaise daalein
 
-Filhal maine simple placeholder images banaye hain testing ke liye.
-Aapko sirf `images` folder ke andar asli candle photos daalni hain —
-**bilkul same naam se** jo upar list me diya hai. Naam match hote hi
-website automatically asli image dikhana shuru kar degi, koi code
-change karne ki zaroorat nahi.
+Har collection ke liye ek alag empty folder bana diya gaya hai
+`images/` ke andar (upar structure me dekho) — jaise
+`images/floral-candles/`, `images/bouquet-candles/`, etc. Bas us
+matching folder ke andar asli candle photos daal do.
+
+Photo daalne ke baad us collection ki HTML file (jaise
+`floral-candles.html`) me sample card ke andar ye wala placeholder
+block:
+```html
+<div class="product-img placeholder">
+  <div><span class="placeholder-tag">Sample — Add Photo</span><br />🌸</div>
+</div>
+```
+isko normal image tag se replace kar do:
+```html
+<div class="product-img"><img src="images/floral-candles/yourfile.png" alt="..." /></div>
+```
+(bilkul waisa hi jaisa `index.html` ya `about.html` me pehle se images
+lagi hui hain — same pattern).
 
 - `logo.png` → Brand logo (ye navbar me + browser tab ke favicon icon
   me dikhega)
 - `hero-candle.png` → Home page ki badi candle wali image
 - `about-candle.png` → About page ki image
-- `product-*.png` → Product page ki candle images (jitne chahiye utne
-  add kar sakte ho, just `product.html` me ek aur `<article
-  class="product-card">` copy-paste kar dena)
 
 ## 📧 Order Backend Setup (ZAROORI — isse karna hai)
 
