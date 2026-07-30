@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shop Handmade Soy Candles — Bloomei &amp; Aura</title>
-<meta name="description" content="Shop handpoured soy wax candles from Bloomei &amp; Aura — Vanilla, Lavender, Rose Garden, Honey, Cinnamon, Jasmine, Ocean, Sandalwood &amp; more. Order online today." />
-<meta name="keywords" content="Bloomei and Aura, Bloomei & Aura, buy soy candles online, handmade candles shop, scented candles India" />
+<title>Shop Candles by Category — Bloomei &amp; Aura</title>
+<meta name="description" content="Explore Bloomei &amp; Aura candle collections — Floral, Bouquet, Glass Jar, Floating, Concrete, Decorative, Gift Hampers &amp; Customized Orders. Handpoured soy wax candles for every mood." />
+<meta name="keywords" content="Bloomei and Aura, Bloomei & Aura, buy soy candles online, candle categories, handmade candles shop, scented candles India" />
 <link rel="canonical" href="https://bloomie-aura.vercel.app/product.html" />
 <link rel="icon" type="image/png" href="images/logo.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,125 +36,82 @@
   </button>
 </header>
 
-<!-- ===================== PRODUCT HERO ===================== -->
+<!-- ===================== CATEGORY HUB HERO ===================== -->
 <section class="section product-hero">
   <p class="eyebrow">The Collection</p>
-  <h1>Bloomei &amp; Aura Candles<br /><span class="hero-tagline">Find your favourite scent</span></h1>
-  <p class="lede center-lede">Every candle below is handpoured in small batches using premium soy wax. Pick one, add it to your cart, and we'll take it from there.</p>
+  <h1>Shop by Category<br /><span class="hero-tagline">Find the candle that's right for you</span></h1>
+  <p class="lede center-lede">Every candle we make is handpoured in small batches using premium soy wax. Pick a collection below to see everything in it.</p>
+</section>
 
-  <div class="search-bar-wrap">
-    <div class="search-bar">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-        <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <input type="text" id="productSearchInput" placeholder="Search candles... e.g. lavender, sweet, calming" autocomplete="off" />
-      <button id="searchClearBtn" class="search-clear" aria-label="Clear search" style="display:none;">✕</button>
-    </div>
-    <p id="searchResultNote" class="search-result-note"></p>
+<!-- ===================== CATEGORY GRID ===================== -->
+<section class="section section-tight product-grid-section">
+  <div class="category-grid">
+
+    <a href="floral-candles.html" class="category-card">
+      <div class="category-icon">🌸</div>
+      <h3>Floral Candles</h3>
+      <p>Rose, jasmine &amp; lavender scents inspired by fresh blooms.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="bouquet-candles.html" class="category-card">
+      <div class="category-icon">💐</div>
+      <h3>Bouquet Candles</h3>
+      <p>Candles handcrafted to look like a blooming flower bouquet.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="glass-jar-candles.html" class="category-card">
+      <div class="category-icon">🫙</div>
+      <h3>Glass Jar Candles</h3>
+      <p>Classic handpoured candles in elegant, reusable glass jars.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="floating-candles.html" class="category-card">
+      <div class="category-icon">🕯️</div>
+      <h3>Floating Candles</h3>
+      <p>Delicate candles that float on water — perfect for décor &amp; events.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="concrete-candles.html" class="category-card">
+      <div class="category-icon">🪨</div>
+      <h3>Concrete Candles</h3>
+      <p>Modern candles poured into handcrafted concrete containers.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="decorative-candles.html" class="category-card">
+      <div class="category-icon">✨</div>
+      <h3>Decorative Candles</h3>
+      <p>Statement candles designed to double as home décor.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="gift-hampers.html" class="category-card">
+      <div class="category-icon">🎁</div>
+      <h3>Gift Hampers</h3>
+      <p>Curated candle gift sets for birthdays, festivals &amp; more.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
+    <a href="customized-orders.html" class="category-card">
+      <div class="category-icon">🎨</div>
+      <h3>Customized Orders</h3>
+      <p>Personalized candles made to your exact preference.</p>
+      <span class="category-cta">Explore →</span>
+    </a>
+
   </div>
 </section>
 
-<!-- ===================== PRODUCT GRID ===================== -->
-<section class="section section-tight product-grid-section">
-  <div class="product-grid">
-
-    <article class="product-card" data-search="vanilla bloom warm creamy floral cozy comforting sweet">
-      <div class="product-img"><img src="images/product-vanilla.png" alt="Vanilla scented soy candle" /></div>
-      <h3>Vanilla Bloom</h3>
-      <p class="product-desc">Warm, creamy vanilla with a soft floral finish — cozy and comforting.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹399</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Vanilla Bloom Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="lavender aura calming relaxing sleep night floral purple">
-      <div class="product-img"><img src="images/product-lavender.png" alt="Lavender scented soy candle" /></div>
-      <h3>Lavender Aura</h3>
-      <p class="product-desc">Calming lavender fields in a jar — perfect for winding down at night.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹399</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Lavender Aura Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="rose garden romantic floral green pink love">
-      <div class="product-img"><img src="images/product-rose.png" alt="Rose garden scented soy candle" /></div>
-      <h3>Rose Garden</h3>
-      <p class="product-desc">A soft, romantic rose scent with gentle green undertones.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹449</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Rose Garden Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="citrus mint fresh refreshing energizing morning lemon orange">
-      <div class="product-img"><img src="images/product-citrus.png" alt="Citrus mint scented soy candle" /></div>
-      <h3>Citrus Mint Fresh</h3>
-      <p class="product-desc">A refreshing citrus-mint blend that wakes up any room instantly.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹399</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Citrus Mint Fresh Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="honey golden sweet cozy comforting warm amber">
-      <div class="product-img"><img src="images/product-honey.png" alt="Honey scented soy candle in honeycomb-textured jar" /></div>
-      <h3>Honey</h3>
-      <p class="product-desc">A warm, golden honey scent that feels sweet, cozy, and comforting.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹399</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Honey Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="cinnamon luxury spiced warm winter festive">
-      <div class="product-img"><img src="images/product-cinnamon.png" alt="Cinnamon luxury scented soy candle" /></div>
-      <h3>Cinnamon</h3>
-      <p class="product-desc">Luxury scented soy candle with a warm, spiced cinnamon aroma. 100% natural soy wax.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹449</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Cinnamon Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="jasmine daydream floral dreamy spring soft white">
-      <div class="product-img"><img src="images/product-jasmine.png" alt="Jasmine Daydream scented soy candle" /></div>
-      <h3>Jasmine Daydream</h3>
-      <p class="product-desc">A soft, floral jasmine soy wax candle that feels like a dreamy spring morning.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹429</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Jasmine Daydream Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="ocean luxury fresh breezy sea blue cool">
-      <div class="product-img"><img src="images/product-ocean.png" alt="Ocean luxury scented soy candle" /></div>
-      <h3>Ocean</h3>
-      <p class="product-desc">Luxury scented soy candle with a fresh, breezy ocean scent. 100% natural soy wax.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹449</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Ocean Candle">Add to Cart</button>
-      </div>
-    </article>
-
-    <article class="product-card" data-search="sandalwood earthy aromatherapy stress relief calming wood">
-      <div class="product-img"><img src="images/product-sandalwood.png" alt="Sandalwood earthy aromatherapy soy candle" /></div>
-      <h3>Sandalwood</h3>
-      <p class="product-desc">Earthy aromatherapy &amp; stress relief soy candle, hand poured for a calming evening.</p>
-      <div class="product-bottom">
-        <span class="product-price">₹449</span>
-        <button class="btn btn-primary add-to-cart-btn" data-product="Sandalwood Candle">Add to Cart</button>
-      </div>
-    </article>
-
-  </div>
-
-  <div id="noResultsMsg" class="no-results-msg" style="display:none;">
-    <div class="no-results-icon">🌸</div>
-    <h3>No exact matches, but here's what's close</h3>
-    <p class="lede center-lede">We couldn't find that exact scent, so we've shown our closest matching candles below.</p>
+<!-- ===================== CTA BAND ===================== -->
+<section class="cta-band">
+  <div class="cta-inner">
+    <h2>Not sure where to start?</h2>
+    <p class="lede">Every collection is handpoured with the same love and care — browse a few and see what speaks to you.</p>
+    <a href="about.html" class="btn btn-primary">Our Story</a>
   </div>
 </section>
 
@@ -196,99 +153,6 @@
   </div>
 </footer>
 
-<!-- ===================== ORDER MODAL (Add to Cart popup) ===================== -->
-<div class="modal-overlay" id="orderModal">
-  <div class="modal-box">
-    <button class="modal-close" id="orderModalClose" aria-label="Close">✕</button>
-
-    <div id="orderFormView">
-      <h3>Complete Your Order</h3>
-      <p class="modal-item-name" id="modalProductLabel">Candle Name</p>
-
-      <form id="orderForm">
-        <input type="hidden" id="orderProductName" value="" />
-
-        <div class="form-group">
-          <label for="orderName">Full Name</label>
-          <input type="text" id="orderName" placeholder="Your full name" required />
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="orderPhone">Phone Number</label>
-            <input type="tel" id="orderPhone" placeholder="10-digit mobile number" required />
-          </div>
-          <div class="form-group">
-            <label for="orderQty">Quantity</label>
-            <select id="orderQty">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="orderEmail">Email Address</label>
-          <input type="email" id="orderEmail" placeholder="you@example.com" required />
-        </div>
-
-        <div class="form-group">
-          <label for="orderAddress">Delivery Address</label>
-          <textarea id="orderAddress" placeholder="House no., street, locality" required></textarea>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="orderCity">City</label>
-            <input type="text" id="orderCity" placeholder="City" required />
-          </div>
-          <div class="form-group">
-            <label for="orderPincode">Pincode</label>
-            <input type="text" id="orderPincode" placeholder="e.g. 452001" required />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="orderNotes">Order Notes (optional)</label>
-          <textarea id="orderNotes" placeholder="Any special instructions..."></textarea>
-        </div>
-
-        <div class="terms-agree" id="termsAgreeBox">
-          <input type="checkbox" id="orderTermsCheckbox" />
-          <label for="orderTermsCheckbox">I have read and agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>, and understand that placing this order is a confirmed commitment to purchase.</label>
-        </div>
-        <div class="terms-error-msg" id="termsErrorMsg">⚠️ Please accept the Terms &amp; Conditions before placing your order.</div>
-
-        <button type="submit" class="btn btn-primary modal-submit">Order Now</button>
-        <p class="modal-note">Clicking "Order Now" will send your order details directly to us — no extra steps needed.</p>
-      </form>
-    </div>
-
-    <div id="orderSuccessView" style="display:none;">
-      <div class="modal-success">
-        <div class="success-icon">🌸</div>
-        <h3>Order Placed!</h3>
-        <p class="lede">Thank you — your order has been sent to us. We'll reach out to confirm delivery details shortly.</p>
-        <button class="btn btn-outline" id="orderDoneBtn" style="margin-top:18px;">Close</button>
-      </div>
-    </div>
-
-    <div id="orderErrorView" class="modal-error" style="display:none;">
-      Something went wrong while sending your order. Please check your internet connection and try again, or contact us directly.
-    </div>
-  </div>
-</div>
-
 <script src="script.js"></script>
-<script>
-  // Close modal from the success view's "Close" button.
-  document.getElementById("orderDoneBtn").addEventListener("click", () => {
-    document.getElementById("orderModal").classList.remove("open");
-    document.body.style.overflow = "";
-  });
-</script>
 </body>
 </html>
